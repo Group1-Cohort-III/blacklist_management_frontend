@@ -1,0 +1,15 @@
+.navbar {
+  @apply flex justify-between items-center py-4;
+
+  .navLogo {
+    @apply w-28 cursor-pointer;
+  }
+
+  .navLink {
+    @apply flex gap-x-3;
+
+    .btn {
+      @apply px-5;
+    }
+  }
+}

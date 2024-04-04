@@ -1,0 +1,15 @@
+.container {
+  @apply flex justify-center items-center w-full h-screen bg-bgColor;
+
+  .content {
+    @apply text-center text-lg;
+
+    h1 {
+      @apply font-bold text-3xl;
+    }
+
+    .status {
+      @apply font-medium mb-3;
+    }
+  }
+}
