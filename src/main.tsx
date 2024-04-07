@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/AboutPage";
 import ErrorPage from "./pages/ErrorPage";
 import ReactDOM from "react-dom/client";
 import "./styles/main.scss";

@@ -1,0 +1,31 @@
+.container {
+  @apply flex flex-col justify-between min-h-screen px-2 md:px-0;
+
+  .content {
+    @apply lg:w-9/12 mx-auto flex justify-between items-center text-center md:text-left;
+
+    .title {
+      @apply flex flex-col gap-y-3 items-center md:items-start md:w-[50%];
+
+      .btn {
+        @apply w-fit px-4 py-[9px] bg-secondary shadow-md;
+        @apply hover:bg-secondary/95;
+        @apply after:inline-block after:content-['\0279E'];
+        @apply after:transition after:ease-out after:ml-1;
+        @apply after:hover:translate-x-1 after:disabled:translate-x-0;
+      }
+    }
+
+    .imgCover {
+      @apply flex-1 hidden md:flex justify-start;
+
+      .imgContainer {
+        @apply w-96 2xl:w-[30rem];
+
+        img {
+          transform: rotateY(180deg);
+        }
+      }
+    }
+  }
+}
