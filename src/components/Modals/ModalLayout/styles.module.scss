@@ -1,0 +1,17 @@
+.backdrop {
+  @apply fixed w-full h-full bg-[rgba(0,0,0,.7)] z-10;
+  @apply overflow-auto inset-0 flex justify-center items-center;
+}
+
+.modal {
+  @apply relative bg-white;
+  @apply w-4/12 mx-auto rounded-xl p-3 z-20;
+
+  .title {
+    @apply text-center text-gray-4 font-semibold text-lg;
+  }
+
+  .closeBtn {
+    @apply absolute top-3 right-2 cursor-pointer hover:text-primary;
+  }
+}

@@ -1,0 +1,19 @@
+.container {
+  ul {
+    @apply flex flex-col gap-y-3 my-3;
+
+    li {
+      label {
+        @apply text-base text-gray-3;
+      }
+    }
+  }
+
+  .btnContainer {
+    @apply flex justify-center;
+
+    button {
+      @apply px-5;
+    }
+  }
+}

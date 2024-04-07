@@ -1,0 +1,27 @@
+.container {
+  ul {
+    @apply flex flex-col gap-y-2 my-3;
+
+    li {
+      @apply border-b border-gray-2;
+      h2 {
+        @apply text-gray-4 text-sm uppercase font-medium;
+      }
+      p {
+        @apply text-gray-4;
+      }
+    }
+
+    li:last-child {
+      @apply border-none;
+    }
+  }
+
+  .btnContainer {
+    @apply flex justify-center;
+
+    button {
+      @apply px-5;
+    }
+  }
+}

@@ -17,10 +17,14 @@
     }
 
     .imgCover {
-      @apply flex-1 hidden md:flex justify-end;
+      @apply flex-1 hidden md:flex justify-start;
 
       .imgContainer {
         @apply w-96 2xl:w-[30rem];
+
+        img {
+          transform: rotateY(180deg);
+        }
       }
     }
   }

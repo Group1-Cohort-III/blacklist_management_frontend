@@ -1,11 +1,11 @@
 .footer {
-  @apply flex justify-between items-center text-primary py-3;
+  @apply lg:w-9/12 mx-auto flex justify-between items-center text-primary py-3;
 
   h4 {
-    @apply font-medium;
+    @apply font-medium text-sm md:text-base;
   }
 
   p {
-    @apply font-normal text-sm;
+    @apply font-normal text-xs md:text-sm;
   }
 }

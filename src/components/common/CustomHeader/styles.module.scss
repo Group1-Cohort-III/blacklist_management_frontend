@@ -1,9 +1,9 @@
 .h1 {
-  @apply text-primary;
+  @apply text-primary p-0 m-0;
 }
 
 .large {
-  @apply text-6xl font-bold;
+  @apply text-3xl md:text-6xl font-bold;
 }
 
 .medium {
