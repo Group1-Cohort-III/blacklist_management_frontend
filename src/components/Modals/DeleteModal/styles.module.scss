@@ -1,0 +1,17 @@
+.container {
+  .subtitle {
+    @apply my-4 text-center;
+  }
+
+  .btnContainer {
+    @apply flex justify-center gap-x-3;
+
+    button {
+      @apply px-6 rounded-md;
+    }
+
+    button:last-child {
+      @apply bg-secondary hover:bg-secondary/80;
+    }
+  }
+}

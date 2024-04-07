@@ -1,0 +1,29 @@
+.container {
+  @apply mb-6 mt-5 mx-auto sm:rounded-lg shadow-md;
+  @apply rounded-md bg-white px-4 py-5;
+
+  .title {
+    @apply font-semibold;
+  }
+
+  .userInfo {
+    @apply flex flex-col md:flex-row gap-6 flex-wrap mt-2;
+
+    li {
+      @apply md:w-[45%];
+
+      label {
+        @apply text-gray-4 text-base;
+      }
+    }
+  }
+
+  .btnContainer {
+    @apply flex justify-center;
+
+    .btn {
+    @apply px-6 my-5;
+  }
+  }
+  
+}

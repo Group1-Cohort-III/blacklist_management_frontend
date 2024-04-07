@@ -1,0 +1,32 @@
+.dashNavbar {
+  @apply flex justify-between items-center w-full px-6 h-16;
+
+  .right {
+    @apply flex gap-x-2 items-center text-sm;
+
+    .settings {
+      @apply text-2xl cursor-pointer;
+    }
+
+    .title {
+      @apply flex gap-x-3 items-center;
+
+      .name {
+        h4 {
+          @apply font-medium;
+        }
+        h6 {
+          @apply text-xs text-gray-4 text-right mt-[-3px];
+        }
+      }
+
+      .passport {
+        @apply h-8 w-8 rounded-full bg-gray-4 flex items-center justify-center;
+
+        svg {
+          @apply text-txtColor;
+        }
+      }
+    }
+  }
+}

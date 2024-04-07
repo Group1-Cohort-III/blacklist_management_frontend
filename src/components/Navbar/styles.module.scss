@@ -1,15 +1,19 @@
 .navbar {
-  @apply flex justify-between items-center py-4;
+  @apply py-4 sticky top-0 z-50 bg-bgColor w-full;
 
-  .navLogo {
-    @apply w-28 cursor-pointer;
-  }
+  .container {
+    @apply flex justify-between items-center lg:w-9/12 mx-auto;
 
-  .navLink {
-    @apply flex gap-x-3;
+    .navLogo {
+      @apply w-28 cursor-pointer;
+    }
 
-    .btn {
-      @apply px-5;
+    .navLink {
+      @apply flex gap-x-3;
+
+      .btn {
+        @apply px-5;
+      }
     }
   }
 }

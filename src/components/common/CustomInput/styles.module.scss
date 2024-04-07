@@ -1,0 +1,23 @@
+.inputContainer {
+  @apply flex items-center relative w-full;
+
+  .input {
+    @apply outline-1 hover:outline hover:outline-gray-2 w-full;
+    @apply disabled:ring-gray-1 disabled:cursor-not-allowed;
+    @apply text-gray-4 bg-white ring-1 ring-gray-2 py-2 px-3;
+    @apply placeholder:text-gray-400 placeholder:font-normal transition-all duration-300;
+    @apply focus:ring-primary focus:ring-2 focus:hover:outline-0;
+    @apply disabled:hover:outline-gray-4 focus:outline-none;
+    @apply hover:outline-primary font-normal text-base rounded-md;
+  }
+
+  label {
+    @apply absolute right-2 translate-y-[-50%] top-1/2 text-xl;
+    @apply cursor-pointer;
+
+    .unlockIcon,
+    .lockIcon {
+      @apply font-extrabold text-primary/40 hover:text-primary text-base;
+    }
+  }
+}

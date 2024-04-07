@@ -1,0 +1,7 @@
+.container {
+  @apply relative;
+
+  .table {
+    @apply lg:w-9/12;
+  }
+}

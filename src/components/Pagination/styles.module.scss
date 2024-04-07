@@ -1,0 +1,45 @@
+.pagination {
+  &_container {
+    @apply flex flex-col md:flex-row justify-between items-center text-sm;
+    @apply px-2 lg:px-6 py-3 text-gray-500 mt-8 gap-y-3 md:gap-y-0;
+  }
+  &_btn_wrapper {
+    @apply flex gap-2 items-center flex-wrap justify-center;
+
+    .content {
+      @apply flex items-center;
+    }
+
+    .input_container {
+      @apply border-none outline outline-1 outline-gray-400 rounded-[5px] w-12 flex items-center;
+      @apply focus-within:outline-2 focus-within:outline-gray-700;
+
+      input {
+        @apply bg-transparent border-none w-full text-gray-700 p-1 text-center;
+        @apply text-base outline-none;
+      }
+
+      .btn_wrapper {
+        @apply border-l border-gray-400 flex flex-col;
+
+        button {
+          @apply cursor-pointer text-gray-400 hover:text-gray-600;
+          @apply disabled:cursor-not-allowed p-0 m-0 disabled:hover:text-gray-400;
+        }
+      }
+    }
+  }
+}
+
+.btn_prev,
+.btn_nxt {
+  @apply hover:text-black disabled:text-gray-400;
+}
+
+.btn_paginate {
+  @apply hover:bg-gray-50 w-8 h-8 rounded-[8px];
+}
+
+.active {
+  @apply bg-white w-8 h-8 rounded-[8px] font-semibold;
+}
