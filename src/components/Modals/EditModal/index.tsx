@@ -36,6 +36,9 @@ export default function EditModal({
     inputData.find((data) => (data.ph === "Reason" ? data.value : ""))
   );
 
+  console.log(selectedOptA);
+  console.log(selectedOpt);
+
   const onSelect = (newVal: IOpt) => {
     setSelectedOpt(newVal);
   };

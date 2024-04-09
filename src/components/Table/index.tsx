@@ -23,7 +23,9 @@ export default function Table({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [windoWidth, setWindoWidth] = useState(window.innerWidth);
 
-  const onSelect = (newVal: IOpt) => {};
+  const onSelect = (newVal: IOpt) => {
+    console.log(newVal)
+  };
 
   useEffect(() => {
     const handleResize = () => {

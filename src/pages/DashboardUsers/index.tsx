@@ -26,7 +26,7 @@ export default function DashboardUsers() {
   const showModalDel = searchParams.get("del");
   const showModalView = searchParams.get("view");
   const showModalEdit = searchParams.get("edit");
-
+  console.log(currentPage);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };

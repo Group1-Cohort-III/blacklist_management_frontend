@@ -8,7 +8,7 @@ export default function UserItemViewPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const theadData = UserViewData.head;
   const tbodyData = UserViewData.body;
-
+  console.log(currentPage);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
