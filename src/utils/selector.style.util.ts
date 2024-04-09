@@ -46,7 +46,8 @@ export const monthStyles = (isMenuOpen: boolean) => {
 export const selectStyles = (
   isMenuOpen: boolean,
   width?: string,
-  fontSize?: string
+  fontSize?: string,
+  windowWidth?: number
 ) => {
   return {
     control: (provided: object, state: { isFocused: boolean }) => ({
@@ -69,11 +70,16 @@ export const selectStyles = (
       ...provided,
       boxShadow: "none",
       border: "none",
-      width,
+      width
     }),
     singleValue: (provided: object) => ({
       ...provided,
-      fontSize: fontSize ? fontSize : "1rem",
+      fontSize:
+        windowWidth && windowWidth <= 428
+          ? "0.8rem"
+          : fontSize
+          ? fontSize
+          : "1rem",
       lineHeight: "1.25rem",
       color: "#606062",
     }),
@@ -92,7 +98,12 @@ export const selectStyles = (
     }),
     option: (provided: object, state: { isSelected: boolean }) => ({
       ...provided,
-      fontSize: fontSize ? fontSize : "1rem",
+      fontSize:
+        windowWidth && windowWidth <= 428
+          ? "0.8rem"
+          : fontSize
+          ? fontSize
+          : "1rem",
       lineHeight: "1.25rem",
       backgroundColor: state.isSelected ? "#18425D" : "white",
       color: state.isSelected ? "white" : "black",

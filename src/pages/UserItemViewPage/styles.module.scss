@@ -1,7 +1,11 @@
 .container {
   @apply relative;
 
-  .table {
-    @apply lg:w-9/12;
+  .content {
+    @apply px-3 lg:px-0;
+
+    .table {
+      @apply lg:w-9/12;
+    }
   }
 }

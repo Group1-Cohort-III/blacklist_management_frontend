@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { modalAnimate } from "../../../utils/data.util";
 import styles from "./styles.module.scss";
 import { MdClose } from "react-icons/md";
 import { ReactNode } from "react";
@@ -10,18 +11,6 @@ interface Props {
   xtraStyle?: string;
   title: string;
 }
-
-const modal = {
-  hidden: { opacity: 0, scale: 0 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.2,
-    },
-  },
-};
 
 export default function ModalLayout({
   showModal,
@@ -48,7 +37,7 @@ export default function ModalLayout({
             initial="hidden"
             animate="visible"
             exit="hidden"
-            variants={modal}
+            variants={modalAnimate}
             className={`${styles.modal} ${xtraStyle}`}
           >
             <span

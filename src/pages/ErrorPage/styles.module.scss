@@ -11,5 +11,12 @@
     .status {
       @apply font-medium mb-3;
     }
+
+    .btnContainer {
+      @apply flex justify-center;
+      button {
+        @apply py-[2px];
+      }
+    }
   }
 }

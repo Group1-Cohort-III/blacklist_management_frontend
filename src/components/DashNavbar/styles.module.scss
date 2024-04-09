@@ -1,15 +1,27 @@
 .dashNavbar {
-  @apply flex justify-between items-center w-full px-6 h-16;
+  @apply flex flex-wrap justify-between items-center w-full px-6 h-16;
+
+  .menu {
+    @apply flex items-center gap-x-2 lg:gap-x-0 text-primary;
+
+    .title {
+      @apply text-lg md:text-xl lg:text-2xl font-medium;
+    }
+
+    svg {
+      @apply lg:hidden cursor-pointer;
+    }
+  }
 
   .right {
-    @apply flex gap-x-2 items-center text-sm;
+    @apply flex flex-wrap gap-x-2 items-center text-sm;
 
     .settings {
       @apply text-2xl cursor-pointer;
     }
 
     .title {
-      @apply flex gap-x-3 items-center;
+      @apply flex flex-wrap gap-x-3 items-center;
 
       .name {
         h4 {

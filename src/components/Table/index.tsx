@@ -1,11 +1,11 @@
 import { selectStyles } from "../../utils/selector.style.util";
 import { IOpt, TableProps } from "../../utils/interfaces";
-import CustomSelect from "../CustomSelect/CustomSelect";
 import { filterOpts } from "../../utils/data.util";
 import CustomButton from "../common/CustomButton";
+import { useEffect, useState } from "react";
+import CustomSelect from "../CustomSelect";
 import styles from "./styles.module.scss";
 import Pagination from "../Pagination";
-import { useState } from "react";
 
 export default function Table({
   title,
@@ -21,8 +21,19 @@ export default function Table({
   onClick,
 }: TableProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [windoWidth, setWindoWidth] = useState(window.innerWidth);
 
   const onSelect = (newVal: IOpt) => {};
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindoWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className={`${styles.table} ${xtraStyle}`}>
@@ -36,7 +47,7 @@ export default function Table({
               setIsMenuOpen={setIsMenuOpen}
               onSelect={onSelect}
               prefillId={"all"}
-              styles={selectStyles(isMenuOpen, "120px", "0.92rem")}
+              styles={selectStyles(isMenuOpen, "120px", "0.92rem", windoWidth)}
             />
           )}
           {showBtn && (

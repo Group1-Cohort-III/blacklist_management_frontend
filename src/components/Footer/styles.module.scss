@@ -1,5 +1,6 @@
 .footer {
-  @apply lg:w-9/12 mx-auto flex justify-between items-center text-primary py-3;
+  @apply w-full lg:w-9/12 mx-auto flex flex-wrap justify-between items-center;
+  @apply text-primary py-3 px-2 md:px-0;
 
   h4 {
     @apply font-medium text-sm md:text-base;

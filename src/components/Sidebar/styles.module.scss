@@ -1,13 +1,54 @@
 .aside {
   @apply bg-primary text-txtColor h-screen w-[20%] relative;
-  @apply flex flex-col justify-between;
+  @apply hidden lg:flex flex-col justify-between;
+
+  .logoContainer {
+    @apply max-w-28 mt-4 ml-3;
+  }
+
+  .links {
+    @apply flex flex-col flex-1 mt-14;
+
+    li.active {
+      @apply border-l-4 border-secondary bg-[#2C5873];
+    }
+
+    li {
+      @apply flex gap-x-2 py-3 px-4 cursor-pointer text-base border-l-4 border-transparent;
+      @apply hover:bg-[#416E8A] hover:border-l-4 hover:border-secondary/90;
+
+      .icon {
+        @apply text-xl;
+      }
+    }
+  }
+
+  .logout {
+    @apply flex gap-x-2 items-center cursor-pointer py-4 px-2;
+    @apply border-t border-[#2C5873] text-sm hover:bg-[#2C5873];
+
+    svg {
+      @apply text-xl;
+    }
+  }
+}
+
+// Mobile Screen Sidebar Styling
+.backdrop {
+  @apply fixed w-full h-full bg-[rgba(0,0,0,.7)] z-10;
+  @apply overflow-auto inset-0 flex justify-center items-center;
+}
+
+.mobileAside {
+  @apply bg-primary text-txtColor h-screen w-[60%] md:w-[40%] fixed top-0 left-0;
+  @apply lg:hidden flex flex-col justify-between z-20;
 
   .closeBtn {
-    @apply absolute top-3 right-3 cursor-pointer text-xl lg:hidden;
+    @apply absolute top-3 right-3 cursor-pointer text-xl;
   }
 
   .logoContainer {
-    @apply w-28 mt-4 ml-3;
+    @apply max-w-28 mt-4 ml-3;
   }
 
   .links {

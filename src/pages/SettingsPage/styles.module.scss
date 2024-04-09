@@ -1,6 +1,6 @@
 .container {
   @apply mb-6 mt-5 mx-auto sm:rounded-lg shadow-md;
-  @apply rounded-md bg-white px-4 py-5;
+  @apply rounded-md bg-white px-4 py-5 relative;
 
   .title {
     @apply font-semibold;
@@ -22,8 +22,7 @@
     @apply flex justify-center;
 
     .btn {
-    @apply px-6 my-5;
+      @apply px-6 my-5;
+    }
   }
-  }
-  
 }
