@@ -1,19 +1,26 @@
-import CustomHeader from "../common/CustomHeader";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { BiMenuAltLeft } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 import styles from "./styles.module.scss";
 import { FaUser } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   title: string;
 }
 
 export default function DashNavbar({ title }: Props) {
+  const setSearchParams = useSearchParams()[1];
   const navigate = useNavigate();
 
   return (
     <nav className={styles.dashNavbar}>
-      <CustomHeader text={title} size="medium" />
+      <span className={styles.menu}>
+        <BiMenuAltLeft
+          size={30}
+          onClick={() => setSearchParams({ show: "true" })}
+        />
+        <h1 className={styles.title}>{title}</h1>
+      </span>
       <div className={styles.right}>
         <span
           className={styles.settings}

@@ -1,5 +1,5 @@
 export const UserViewData = {
-  head: ["S/N", "NAME", "CATEGORY", "DESCRIPTION", "REASON", "DATE"],
+  head: ["#", "NAME", "CATEGORY", "DESCRIPTION", "REASON", "DATE"],
   body: [
     ["1", "Honda", "Vehicle", "Black Honda Civic", "Bad wheels", "24/03/2024"],
     ["2", "Honda", "Vehicle", "Black Honda Civic", "Bad wheels", "24/03/2024"],
@@ -225,4 +225,27 @@ export const errorMsgAnimate = {
       staggerChildren: 0.2,
     },
   },
+};
+
+export const navbarAnimate = {
+  hidden: { opacity: 0, y: "-100%" },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
+export const sidebarAnimate = {
+  hidden: { x: "-100%" },
+  visible: { x: 0 },
+};
+
+export const framerText = (delay: number) => {
+  return {
+    initial: { opacity: 0, x: -50 },
+    animate: { opacity: 1, x: 0 },
+    transition: {
+      delay: 0.3 + delay / 10,
+    },
+  };
 };

@@ -1,7 +1,7 @@
-import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import Select, { DropdownIndicatorProps, components } from "react-select";
-import { useEffect, useState } from "react";
 import { ICustomSelect, IOpt } from "../../utils/interfaces";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { useEffect, useState } from "react";
 
 export default function CustomSelect({
   options,
@@ -18,9 +18,9 @@ export default function CustomSelect({
   const DropdownIndicator = (props: DropdownIndicatorProps) => (
     <components.DropdownIndicator {...props}>
       {isMenuOpen ? (
-        <FiChevronUp size={22} color={dropDownColor && dropDownColor} />
+        <FiChevronUp size={20} color={dropDownColor && dropDownColor} />
       ) : (
-        <FiChevronDown size={22} color={dropDownColor && dropDownColor} />
+        <FiChevronDown size={20} color={dropDownColor && dropDownColor} />
       )}
     </components.DropdownIndicator>
   );

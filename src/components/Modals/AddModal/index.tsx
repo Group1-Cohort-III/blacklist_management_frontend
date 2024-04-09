@@ -1,13 +1,13 @@
+import { cateOpts, statusOpts, userOpts } from "../../../utils/data.util";
 import { selectStyles } from "../../../utils/selector.style.util";
-import CustomSelect from "../../CustomSelect";
+import { isValidEmail } from "../../../utils/validemail.util";
+import { ChangeEvent, useEffect, useState } from "react";
 import { CustomInput } from "../../common/CustomInput";
 import CustomButton from "../../common/CustomButton";
-import { cateOpts, statusOpts, userOpts } from "../../../utils/data.util";
+import { IOpt } from "../../../utils/interfaces";
+import CustomSelect from "../../CustomSelect";
 import styles from "./styles.module.scss";
 import ModalLayout from "../ModalLayout";
-import { ChangeEvent, useEffect, useState } from "react";
-import { IOpt } from "../../../utils/interfaces";
-import { isValidEmail } from "../../../utils/validemail.util";
 
 interface Props {
   showModal: string | null;
@@ -75,6 +75,7 @@ export default function AddModal({
 
   const onSelect = (newVal: IOpt) => {
     setSelectedOpt(newVal);
+    console.log(newVal);
   };
 
   const onSelectProd = (newVal: IOpt) => {

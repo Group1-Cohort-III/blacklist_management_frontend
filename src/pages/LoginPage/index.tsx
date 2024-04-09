@@ -1,11 +1,11 @@
+import { CustomInput } from "../../components/common/CustomInput";
 import CustomButton from "../../components/common/CustomButton";
 import CustomHeader from "../../components/common/CustomHeader";
-import { CustomInput } from "../../components/common/CustomInput";
+import { isValidEmail } from "../../utils/validemail.util";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
 import { HomeLogo } from "../../assets";
-import { ChangeEvent, useEffect, useState } from "react";
-import { isValidEmail } from "../../utils/validemail.util";
 
 export default function LoginPage() {
   const [inputValue, setInputValue] = useState({

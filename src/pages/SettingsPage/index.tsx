@@ -5,7 +5,6 @@ import DashboardLayout from "../../components/DashboardLayout";
 import { userData } from "../../utils/data.util";
 import { ChangeEvent, useState } from "react";
 import styles from "./styles.module.scss";
-import Toast from "../../components/Toast";
 
 export default function SettingsPage() {
   const [inputValue, setInputValue] = useState(
@@ -18,7 +17,6 @@ export default function SettingsPage() {
   const disableUpd =
     Object.values(updInput).some((val) => val === "") ||
     inputValue["New Password"] !== inputValue["Confirm Password"];
-  const [hasError, setHasError] = useState(true);
 
   const handleOnChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = evt.target;
@@ -29,12 +27,6 @@ export default function SettingsPage() {
     <DashboardLayout title="Settings">
       <div className={styles.container}>
         <CustomHeader text="User Profile" xtraStyle={styles.title} />
-        <Toast
-          isErrorMsg
-          text="Invalid Password or username"
-          showErrorMsg={hasError}
-          hideErrorMsg={setHasError}
-        />
         <ul className={styles.userInfo}>
           {userData.slice(0, 4).map((data, idx) => (
             <li key={idx}>

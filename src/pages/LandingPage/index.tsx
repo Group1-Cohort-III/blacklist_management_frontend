@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { Knight } from "../../assets";
-import Footer from "../../components/Footer";
-import Navbar from "../../components/Navbar";
 import CustomButton from "../../components/common/CustomButton";
 import CustomHeader from "../../components/common/CustomHeader";
+import { useNavigate } from "react-router-dom";
+import Footer from "../../components/Footer";
+import Navbar from "../../components/Navbar";
 import styles from "./styles.module.scss";
+import { Knight } from "../../assets";
 
 export default function LandingPage() {
   const navigate = useNavigate();
