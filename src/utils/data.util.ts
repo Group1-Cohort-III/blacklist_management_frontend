@@ -118,13 +118,7 @@ export const BlackListData = {
   ],
 };
 
-export const inputData = [
-  "First Name",
-  "Last Name",
-  "Email",
-  "Password",
-  "Phone",
-];
+export const inputData = ["Email", "Password"];
 
 export const inputDataList = ["Name", "Description"];
 
@@ -132,18 +126,17 @@ export const inputDataEdit = [
   { ph: "First Name", value: "Vicolas", opt: [] },
   { ph: "Last Name", value: "Akoh", opt: [] },
   { ph: "Email", value: "vicolas@email.com", opt: [] },
-  { ph: "Username", value: "Vicolas11", opt: [] },
-  { ph: "Phone", value: "08107874622", opt: [] },
 ];
 
 export const inputDataListEdit = [
-  { ph: "Name", value: "Lenovo" },
-  { ph: "Category", value: "electron" },
-  { ph: "Description", value: "Black Sleek Laptop, 14 inch screen" },
+  { ph: "Name", value: "Lenovo", opt: [] },
+  { ph: "Category", value: "electron", opt: [] },
+  { ph: "Description", value: "Black Sleek Laptop, 14 inch screen", opt: [] },
   {
     ph: "Reason",
     value:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio veniam cum pariatur delectus impedit vitae dolor, quidem, illo quisquam eaque corrupti, nesciunt provident optio dolores molestiae itaque earum consequatur distinctio!",
+    opt: [],
   },
 ];
 
@@ -199,3 +192,37 @@ export const inputDataProd = [
   { ph: "Category", value: "electron", opt: cateOpts },
   { ph: "Status", value: "blc", opt: statusOpts },
 ];
+
+export const userData = [
+  { label: "First Name", data: "Vicolas" },
+  { label: "Last Name", data: "Akoh" },
+  { label: "Username", data: "Vicolas11" },
+  { label: "Email", data: "vicolas@email.com" },
+  { label: "Current Password", data: "" },
+  { label: "New Password", data: "" },
+  { label: "Confirm Password", data: "" },
+];
+
+export const modalAnimate = {
+  hidden: { opacity: 0, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+export const errorMsgAnimate = {
+  hidden: { opacity: 0, y: -10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};

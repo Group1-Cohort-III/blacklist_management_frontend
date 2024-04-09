@@ -33,7 +33,6 @@ export default function CustomSelect({
   useEffect(() => {
     if (prefillId && options) {
       const selectedOpt = options.find((option) => option.value === prefillId);
-
       if (selectedOpt) setValue(selectedOpt);
     }
   }, [options, prefillId]);

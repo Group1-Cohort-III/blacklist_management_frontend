@@ -23,11 +23,13 @@ export default function ErrorPage() {
         <p className={styles.status}>
           {status === 404 ? "Page Not Found" : statusText}
         </p>
-        <CustomButton
-          isOutline
-          title="Go Home"
-          onClick={() => navigate("/", { replace: true })}
-        />
+        <div className={styles.btnContainer}>
+          <CustomButton
+            isOutline
+            title="Go Home"
+            onClick={() => navigate("/", { replace: true })}
+          />
+        </div>
       </div>
     </div>
   );

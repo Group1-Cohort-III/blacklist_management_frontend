@@ -1,6 +1,6 @@
 import { selectStyles } from "../../utils/selector.style.util";
 import { IOpt, TableProps } from "../../utils/interfaces";
-import CustomSelect from "../CustomSelect/CustomSelect";
+import CustomSelect from "../CustomSelect";
 import { filterOpts } from "../../utils/data.util";
 import CustomButton from "../common/CustomButton";
 import styles from "./styles.module.scss";

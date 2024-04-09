@@ -2,10 +2,12 @@
   @apply bg-primary text-txtColor px-3 py-[6px] text-[15px] rounded-[15px] ease-out;
   @apply hover:bg-primary/85 transition duration-300 scale-100 active:scale-105 border-primary;
   @apply disabled:cursor-default disabled:bg-primary/30 disabled:scale-100;
+  @apply flex gap-x-1 items-center;
 }
 
 .btnOutline {
   @apply border-2 border-primary text-[15px] text-primary rounded-[15px] px-3 py-1;
   @apply transition duration-300 scale-100 active:scale-105 ease-out;
-  @apply hover:bg-primary/85 hover:text-txtColor hover:border-primary/75;
+  @apply hover:bg-primary/85 hover:text-txtColor hover:border-primary/75 disabled:scale-100;
+  @apply flex gap-x-1 items-center;
 }

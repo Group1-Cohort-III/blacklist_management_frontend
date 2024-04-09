@@ -1,12 +1,12 @@
 import { selectStyles } from "../../../utils/selector.style.util";
-import CustomSelect from "../../CustomSelect/CustomSelect";
+import CustomSelect from "../../CustomSelect";
 import { CustomInput } from "../../common/CustomInput";
 import CustomButton from "../../common/CustomButton";
 import { cateOpts, userOpts } from "../../../utils/data.util";
 import { IOpt } from "../../../utils/interfaces";
 import styles from "./styles.module.scss";
 import ModalLayout from "../ModalLayout";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 interface Props {
   showModal: string | null;
@@ -25,12 +25,40 @@ export default function EditModal({
   inputData,
   type = "user",
 }: Props) {
+  const [inputValue, setInputValue] = useState(
+    Object.fromEntries(inputData.map((data) => [data.ph, data.value]))
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMenuOpenA, setIsMenuOpenA] = useState(false);
+  const [selectedOpt, setSelectedOpt] = useState<IOpt | null>(null);
+  const [selectedOptA, setSelectedOptA] = useState<IOpt | null>(null);
+  const [inputReason, setInputReason] = useState(
+    inputData.find((data) => (data.ph === "Reason" ? data.value : ""))
+  );
 
   const onSelect = (newVal: IOpt) => {
-    console.log(newVal);
+    setSelectedOpt(newVal);
   };
+
+  const onSelectProd = (newVal: IOpt) => {
+    setSelectedOptA(newVal);
+  };
+
+  const handleOnChange = (
+    evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { value, name } = evt.target;
+    if (name === "reason" && inputReason) {
+      setInputReason({ ...inputReason, value });
+    }
+    setInputValue({ ...inputValue, [name]: value });
+  };
+
+  useEffect(() => {
+    console.log(inputReason);
+  }, [inputReason]);
+
+  const userDisable = Object.values(inputValue).some((value) => value === "");
 
   return (
     <ModalLayout title={title} showModal={showModal}>
@@ -55,9 +83,10 @@ export default function EditModal({
                     <label htmlFor={data.ph}>{data.ph}</label>
                     <CustomInput
                       id={data.ph}
+                      name={data.ph}
                       placeholder={data.ph}
-                      value={data.value}
-                      onChange={() => {}}
+                      value={inputValue[data.ph]}
+                      onChange={handleOnChange}
                     />
                   </>
                 )}
@@ -68,7 +97,12 @@ export default function EditModal({
                   {idx === lstIdx ? (
                     <>
                       <label htmlFor={data.ph}>{data.ph}</label>
-                      <textarea id={data.ph}>
+                      <textarea
+                        id={data.ph}
+                        name="reason"
+                        value={inputReason?.value}
+                        onChange={handleOnChange}
+                      >
                         {inputData[lstIdx].value}
                       </textarea>
                     </>
@@ -90,9 +124,10 @@ export default function EditModal({
                       <label htmlFor={data.ph}>{data.ph}</label>
                       <CustomInput
                         id={data.ph}
+                        name={data.ph}
                         placeholder={data.ph}
-                        value={data.value}
-                        onChange={() => {}}
+                        value={inputValue[data.ph]}
+                        onChange={handleOnChange}
                       />
                     </>
                   )}
@@ -114,23 +149,24 @@ export default function EditModal({
                     setIsMenuOpen={
                       data.ph === "Category" ? setIsMenuOpen : setIsMenuOpenA
                     }
-                    onSelect={onSelect}
+                    onSelect={data.ph === "Category" ? onSelect : onSelectProd}
                     prefillId={data.value}
                     styles={selectStyles(isMenuOpen, "100%")}
                   />
                 ) : (
                   <CustomInput
                     id={data.ph}
+                    name={data.ph}
                     placeholder={data.ph}
-                    value={data.value}
-                    onChange={() => {}}
+                    value={inputValue[data.ph]}
+                    onChange={handleOnChange}
                   />
                 )}
               </li>
             ))}
         </ul>
         <div className={styles.btnContainer}>
-          <CustomButton title={title} />
+          <CustomButton title={title} disabled={userDisable} />
         </div>
       </div>
     </ModalLayout>

@@ -1,0 +1,17 @@
+.errorContainer {
+  @apply absolute top-[-20px] inset-x-0 mx-auto w-fit bg-red-200 text-red-800 p-2;
+  @apply flex items-center justify-between rounded-md gap-x-2 text-base z-[100];
+
+  svg {
+    @apply cursor-pointer hover:text-red-900;
+  }
+}
+
+.successContainer {
+  @apply fixed top-5 inset-x-0 mx-auto w-fit bg-green-200 text-green-800 p-2;
+  @apply flex items-center justify-between rounded-md gap-x-2 text-base;
+
+  svg {
+    @apply cursor-pointer hover:text-green-900;
+  }
+}

@@ -1,16 +1,19 @@
 import { ButtonHTMLAttributes } from "react";
 import styles from "./styles.module.scss";
+import { PuffLoader } from "react-spinners";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
   xtraStyle?: string;
   isOutline?: boolean;
+  showLoader?: boolean;
 }
 
 export default function CustomButton({
   title,
   xtraStyle,
   isOutline = false,
+  showLoader = false,
   ...rest
 }: Props) {
   return (
@@ -18,7 +21,8 @@ export default function CustomButton({
       className={`${isOutline ? styles.btnOutline : styles.btn} ${xtraStyle}`}
       {...rest}
     >
-      {title}
+      {showLoader && <PuffLoader color="#18425D" size={20} />}
+      {`${title}${showLoader ? "..." : ""}`}
     </button>
   );
 }
