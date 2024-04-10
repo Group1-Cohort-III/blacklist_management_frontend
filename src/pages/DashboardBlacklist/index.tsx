@@ -26,6 +26,7 @@ export default function DashboardBlacklist() {
   const showModalEdit = searchParams.get("edit");
   const theadData = BlackListData.head;
   const tbodyData = BlackListData.body;
+  console.log(currentPage);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
