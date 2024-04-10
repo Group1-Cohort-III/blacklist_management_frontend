@@ -1,7 +1,7 @@
 import { CustomInput } from "../../components/common/CustomInput";
 import CustomButton from "../../components/common/CustomButton";
 import CustomHeader from "../../components/common/CustomHeader";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
 import { HomeLogo } from "../../assets";
@@ -38,6 +38,9 @@ export default function SetPasswordPage() {
     { text: "Must have atleast one lowercase letter", status: isValid.isLower },
     { text: "Must have atleast one number", status: isValid.isNumeric },
   ];
+  const isUpper = useMemo(() => /[A-Z]/, []);
+  const isLower = useMemo(() => /[a-z]/, []);
+  const isNumeric = useMemo(() => /[0-9]/, []);
 
   const handleOnChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = evt.target;
@@ -51,17 +54,17 @@ export default function SetPasswordPage() {
 
   useEffect(() => {
     document.title = `BlackGuard | Set Password`;
-    setIsValid({
-      ...isValid,
+    setIsValid((prev) => ({
+      ...prev,
       isSixLen: psd.length >= 6,
-      isUpper: /[A-Z]/.test(psd),
-      isLower: /[a-z]/.test(psd),
-      isNumeric: /[0-9]/.test(psd),
-    });
+      isUpper: isUpper.test(psd),
+      isLower: isLower.test(psd),
+      isNumeric: isNumeric.test(psd),
+    }));
     return () => {
       document.title = "BlackGuard";
     };
-  }, [isValid, psd, psd.length]);
+  }, [isLower, isNumeric, isUpper, psd]);
 
   return (
     <div className={styles.container}>
