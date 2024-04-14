@@ -11,7 +11,7 @@ export const UserViewData = {
 };
 
 export const UsersData = {
-  head: ["#", "First Name", "Last Name", "Email", "Phone", "Role", ""],
+  head: ["#", "ID", "First Name", "Last Name", "Email", "Set Password", ""],
   body: [
     [
       "1",
@@ -71,7 +71,7 @@ export const UsersData = {
 };
 
 export const ProductData = {
-  head: ["#", "NAME", "CATEGORY", "DESCRIPTION", "STATUS", "DATE", ""],
+  head: ["#", "ID", "NAME", "DESCRIPTION", "STATUS", "CREATED", "UPDATED", ""],
   body: [
     [
       "1",
@@ -107,7 +107,7 @@ export const ProductData = {
 };
 
 export const BlackListData = {
-  head: ["#", "NAME", "CATEGORY", "DESCRIPTION", "REASON", "DATE", ""],
+  head: ["#", "ID", "PRODUCT NAME", "CRITERIA", "DATE", ""],
   body: [
     ["1", "Lenovo", "Computer", "14’ Screen Black", "Broken", "24/03/2024", ""],
     ["2", "iPhone", "Phone", "Sleek Black", "Good condition", "25/03/2024", ""],
@@ -118,14 +118,14 @@ export const BlackListData = {
   ],
 };
 
-export const inputData = ["Email", "Password"];
+export const inputData = ["Email"];
 
 export const inputDataList = ["Name", "Description"];
 
 export const inputDataEdit = [
-  { ph: "First Name", value: "Vicolas", opt: [] },
-  { ph: "Last Name", value: "Akoh", opt: [] },
-  { ph: "Email", value: "vicolas@email.com", opt: [] },
+  { ph: "First Name", value: "Kalu", opt: [] },
+  { ph: "Last Name", value: "Uche", opt: [] },
+  { ph: "Email", value: "kalu@email.com", opt: [] },
 ];
 
 export const inputDataListEdit = [
@@ -164,8 +164,8 @@ export const inputDataProdView = [
 ];
 
 export const userOpts = [
-  { value: "user", label: "Admin User" },
-  { value: "blacklist", label: " Admin Blacklist" },
+  { value: "0", label: "User Admin" },
+  { value: "1", label: " BlackList Admin" },
 ];
 
 export const filterOpts = [
@@ -201,6 +201,11 @@ export const userData = [
   { label: "Current Password", data: "" },
   { label: "New Password", data: "" },
   { label: "Confirm Password", data: "" },
+];
+
+export const selectOptData = [
+  { title: "Yes, I have a password!", key: "yes" },
+  { title: "No, I don't have a password!", key: "no" },
 ];
 
 export const modalAnimate = {
