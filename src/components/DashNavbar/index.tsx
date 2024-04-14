@@ -1,16 +1,21 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { UserData } from "../../interfaces/slice.interface";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 import styles from "./styles.module.scss";
 import { FaUser } from "react-icons/fa";
+import { constant } from "../../configs/constant.config";
 
 interface Props {
   title: string;
+  userData: UserData | null;
 }
 
-export default function DashNavbar({ title }: Props) {
+export default function DashNavbar({ title, userData }: Props) {
   const setSearchParams = useSearchParams()[1];
   const navigate = useNavigate();
+  const { adminEmail } = constant;
+  const isSuperAdmin = userData?.email === adminEmail;
 
   return (
     <nav className={styles.dashNavbar}>
@@ -30,8 +35,10 @@ export default function DashNavbar({ title }: Props) {
         </span>
         <div className={styles.title}>
           <div className={styles.name}>
-            <h4>Vicolas Akoh</h4>
-            <h6>User Admin</h6>
+            <h4>{userData?.email || "user@email.com"} </h4>
+            <h6>
+              {isSuperAdmin ? "SuperAdmin" : userData?.role || "UserRole"}{" "}
+            </h6>
           </div>
           <span className={styles.passport}>
             <FaUser />

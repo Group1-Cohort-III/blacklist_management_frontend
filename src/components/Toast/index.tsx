@@ -5,8 +5,8 @@ import styles from "./styles.module.scss";
 import { MdClose } from "react-icons/md";
 
 interface Props {
-  isErrorMsg?: boolean;
-  text: string;
+  isErrorMsg?: boolean | null;
+  text: string | null;
   showErrorMsg: boolean;
   hideErrorMsg: Dispatch<React.SetStateAction<boolean>>;
 }

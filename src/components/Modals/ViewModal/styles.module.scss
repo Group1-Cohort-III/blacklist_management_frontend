@@ -1,4 +1,14 @@
 .container {
+  @apply relative;
+
+  .loader {
+    @apply absolute top-1/2 translate-y-[-50%] inset-x-0 text-center mx-auto w-full;
+  }
+
+  .errTxt {
+    @apply text-secondary text-center font-normal;
+  }
+
   ul {
     @apply flex flex-col gap-y-2 my-3;
 

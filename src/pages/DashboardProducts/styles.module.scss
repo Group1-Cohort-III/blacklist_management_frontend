@@ -6,13 +6,17 @@
 
     .body {
       @apply h-[calc(100vh-4rem)] overflow-auto px-6;
-
-      .btnAction {
-        @apply flex gap-x-2;
-        svg {
-          @apply text-base cursor-pointer hover:text-secondary;
-        }
-      }
     }
   }
+}
+
+.btnAction {
+  @apply flex gap-x-2;
+  svg {
+    @apply text-base md:text-xl lg:text-lg cursor-pointer hover:text-secondary;
+  }
+}
+
+.checkIcon {
+  @apply text-green-600 flex justify-center items-center;
 }

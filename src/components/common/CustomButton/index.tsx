@@ -7,6 +7,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   xtraStyle?: string;
   isOutline?: boolean;
   showLoader?: boolean;
+  isDeleteBtn?: boolean;
 }
 
 export default function CustomButton({
@@ -14,6 +15,7 @@ export default function CustomButton({
   xtraStyle,
   isOutline = false,
   showLoader = false,
+  isDeleteBtn,
   ...rest
 }: Props) {
   return (
@@ -21,7 +23,9 @@ export default function CustomButton({
       className={`${isOutline ? styles.btnOutline : styles.btn} ${xtraStyle}`}
       {...rest}
     >
-      {showLoader && <PuffLoader color="#18425D" size={20} />}
+      {showLoader && (
+        <PuffLoader color={isDeleteBtn ? "#ffffff" : "#18425D"} size={20} />
+      )}
       {`${title}${showLoader ? "..." : ""}`}
     </button>
   );

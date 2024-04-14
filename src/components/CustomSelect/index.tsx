@@ -1,5 +1,9 @@
-import Select, { DropdownIndicatorProps, components } from "react-select";
-import { ICustomSelect, IOpt } from "../../utils/interfaces";
+import Select, {
+  DropdownIndicatorProps,
+  MenuListProps,
+  components,
+} from "react-select";
+import { ICustomSelect, IOpt } from "../../interfaces/props.interface";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { useEffect, useState } from "react";
 
@@ -12,6 +16,11 @@ export default function CustomSelect({
   setIsMenuOpen,
   onSelect,
   prefillId,
+  loadMore,
+  inProgress,
+  isAsync,
+  isError,
+  showBtn,
 }: ICustomSelect) {
   const [value, setValue] = useState<IOpt | null>(null);
 
@@ -23,6 +32,30 @@ export default function CustomSelect({
         <FiChevronDown size={20} color={dropDownColor && dropDownColor} />
       )}
     </components.DropdownIndicator>
+  );
+
+  const MenuList = (props: MenuListProps) => (
+    <components.MenuList {...props}>
+      {props.children}
+      {isError ? (
+        <p style={{ fontSize: "12px", textAlign: "center" }}>
+          an error occurred
+        </p>
+      ) : inProgress ? (
+        <p style={{ fontSize: "12px", textAlign: "center" }}>...Loading</p>
+      ) : (
+        isAsync &&
+        showBtn && (
+          <button
+            style={{ padding: "0 10px", fontSize: "12px", color: "GrayText" }}
+            disabled={inProgress || isError}
+            onClick={() => loadMore && loadMore((prev) => prev + 1)}
+          >
+            Load More
+          </button>
+        )
+      )}
+    </components.MenuList>
   );
 
   const handleOnChange = (newValue: IOpt) => {
@@ -40,7 +73,7 @@ export default function CustomSelect({
   return (
     <Select
       options={options}
-      components={{ DropdownIndicator }}
+      components={{ DropdownIndicator, MenuList }}
       value={value}
       isSearchable={false}
       styles={styles}
