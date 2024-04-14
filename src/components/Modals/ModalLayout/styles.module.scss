@@ -1,11 +1,11 @@
 .backdrop {
-  @apply fixed w-full h-full bg-[rgba(0,0,0,.7)] z-10;
+  @apply fixed w-full h-full bg-[rgba(0,0,0,.7)] z-[100];
   @apply overflow-auto inset-0 flex justify-center items-center;
 }
 
 .modal {
   @apply relative bg-white;
-  @apply mx-auto rounded-xl p-3 z-20;
+  @apply mx-auto rounded-xl p-3 z-[101];
   @apply w-[90%] md:w-1/2 lg:w-4/12 xl:w-[30%] 2xl:w-[20%];
 
   .title {

@@ -7,22 +7,49 @@ import { FaUsers } from "react-icons/fa";
 import { DashLogo } from "../../assets";
 import { AnimatePresence, motion } from "framer-motion";
 import { framerText, sidebarAnimate } from "../../utils/data.util";
+import { useAppDispatch } from "../../hooks/store.hook";
+import { logoutUser } from "../../store/slices/auth.slice";
+import { UserData } from "../../interfaces/slice.interface";
 
-export default function Sidebar() {
+interface Props {
+  userData: UserData | null;
+}
+
+export default function Sidebar({ userData }: Props) {
   const searchParams = useSearchParams()[0];
   const { pathname: pth } = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const showSidebar = searchParams.get("show");
-  const sidebarLinks = [
-    { title: "Users", Icon: FaUsers, path: "/users" },
-    {
-      title: "Products",
-      Icon: MdOutlineProductionQuantityLimits,
-      path: "/products",
-    },
-    { title: "BlackList", Icon: TiCancelOutline, path: "/blacklist" },
-    { title: "Settings", Icon: IoMdSettings, path: "/settings" },
-  ];
+  const role = userData?.role;
+
+  const sidebarLinks =
+    role === "UserAdmin"
+      ? [
+          { title: "Users", Icon: FaUsers, path: "/users" },
+          {
+            title: "Products",
+            Icon: MdOutlineProductionQuantityLimits,
+            path: "/products",
+          },
+          { title: "Settings", Icon: IoMdSettings, path: "/settings" },
+        ]
+      : role === "BlackListAdmin"
+      ? [
+          {
+            title: "Products",
+            Icon: MdOutlineProductionQuantityLimits,
+            path: "/products",
+          },
+          { title: "BlackList", Icon: TiCancelOutline, path: "/blacklist" },
+          { title: "Settings", Icon: IoMdSettings, path: "/settings" },
+        ]
+      : [];
+
+  const logout = () => {
+    dispatch(logoutUser());
+    navigate("/", { replace: true });
+  };
 
   return (
     <>
@@ -43,7 +70,7 @@ export default function Sidebar() {
             </li>
           ))}
         </ul>
-        <div className={styles.logout} onClick={() => navigate("/")}>
+        <div className={styles.logout} onClick={logout}>
           <span>{<IoMdLogOut />}</span>
           <span>Logout</span>
         </div>
@@ -84,7 +111,7 @@ export default function Sidebar() {
                   </li>
                 ))}
               </ul>
-              <div className={styles.logout} onClick={() => navigate("/")}>
+              <div className={styles.logout} onClick={logout}>
                 <span>{<IoMdLogOut />}</span>
                 <span>Logout</span>
               </div>

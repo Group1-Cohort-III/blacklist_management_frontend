@@ -2,6 +2,18 @@
   @apply mb-6 mx-auto relative overflow-x-auto sm:rounded-lg w-full shadow-md;
   @apply rounded-md bg-white mt-5;
 
+  .empty_text {
+    @apply text-center font-bold my-4 text-lg text-primary;
+  }
+
+  .errTxt {
+    @apply text-center font-bold my-4 text-base text-secondary;
+  }
+
+  .loader {
+    @apply flex justify-center items-center py-5;
+  }
+
   .header {
     @apply flex flex-wrap justify-between items-center px-5 py-1;
 

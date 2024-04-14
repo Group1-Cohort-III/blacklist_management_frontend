@@ -25,7 +25,7 @@ export default function Navbar() {
             <img src={HomeLogo} alt="Home Logo" />
           </div>
         </Link>
-
+        {/* Show on desktop Screen */}
         <ul className={styles.navLink}>
           <li>
             <CustomButton
@@ -38,7 +38,7 @@ export default function Navbar() {
             <CustomButton
               title="Login"
               xtraStyle={styles.btn}
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/select")}
             />
           </li>
         </ul>
@@ -56,7 +56,7 @@ export default function Navbar() {
               className={styles.mobileNavLink}
             >
               <li onClick={() => handleOnClick("/about")}>About Us</li>
-              <li onClick={() => handleOnClick("/login")}>Login</li>
+              <li onClick={() => handleOnClick("/select")}>Login</li>
             </motion.ul>
           )}
         </AnimatePresence>
