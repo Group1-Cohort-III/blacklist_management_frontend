@@ -1,5 +1,6 @@
 .footer {
-  @apply w-full lg:w-9/12 mx-auto flex flex-wrap justify-between items-center;
+  @apply w-full lg:w-9/12 mx-auto flex flex-col md:flex-row flex-wrap justify-center;
+  @apply md:justify-between items-center;
   @apply text-primary py-3 px-2 md:px-0;
 
   h4 {
