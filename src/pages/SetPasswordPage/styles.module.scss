@@ -9,7 +9,7 @@
     }
 
     form {
-      @apply bg-white w-full pt-3 pb-6 px-3 flex flex-col gap-y-3 rounded-lg text-center;
+      @apply relative bg-white w-full pt-3 pb-6 px-3 flex flex-col gap-y-3 rounded-lg text-center;
       box-shadow: 1px 1px 5px rgba(#000000, 0.2);
 
       .subTitle {
@@ -17,18 +17,33 @@
       }
 
       .condition {
-        @apply text-start bg-gray-200 text-gray-700 px-2 py-2;
+        @apply text-start bg-gray-200 text-gray-700 px-2 py-2 text-[15px];
         ul {
-          @apply text-start list-disc list-inside text-base;
+          @apply text-start list-disc list-inside text-sm;
+        }
+
+        li {
+          @apply flex items-center gap-x-1;
+          svg {
+            @apply text-xs;
+          }
         }
 
         li.active {
-          @apply text-secondary font-medium;
+          @apply text-green-700 font-medium;
         }
       }
 
       .btn {
         @apply rounded-lg py-[10px];
+      }
+
+      .dont {
+        @apply text-primary;
+
+        span {
+          @apply cursor-pointer font-medium;
+        }
       }
     }
   }
