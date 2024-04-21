@@ -1,105 +1,102 @@
-import { ProductData } from "../../utils/data.util";
+import { ChangeEvent, useEffect, useState, KeyboardEvent, memo } from "react";
+import ViewBlacklistModal from "../../components/Modals/ViewBlacklistModal";
+import { useGetAllBlacklistQuery } from "../../services/blacklist.api";
+import { RTKError, RTKUpdErr } from "../../interfaces/generic.interface";
+import { CustomInput } from "../../components/common/CustomInput";
+import { setBlacklist } from "../../store/slices/general.slice";
+import { dataType } from "../../interfaces/props.interface";
+import { formatDate } from "../../utils/formatdate.util";
+import { useAppDispatch } from "../../hooks/store.hook";
+import { sliceText } from "../../utils/slicetext.util";
+import { BlackListData } from "../../utils/data.util";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import { IoEyeSharp } from "react-icons/io5";
 import Table from "../../components/Table";
 import styles from "./styles.module.scss";
-import { useEffect, useState } from "react";
-import { useGetAllProductsQuery } from "../../services/product.api";
-import { formatDate } from "../../utils/formatdate.util";
-import ViewModal from "../../components/Modals/ViewModal";
-import { useSearchParams } from "react-router-dom";
-import { sliceText } from "../../utils/slicetext.util";
-import { TiCancelOutline } from "react-icons/ti";
-import { IoEyeSharp } from "react-icons/io5";
-import { RTKError, RTKUpdErr } from "../../interfaces/generic.interface";
-import { Trow } from "../../interfaces/props.interface";
+import { FiSearch } from "react-icons/fi";
 
 export default function UserItemViewPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowIndex, setRowIndex] = useState<number | null>(null);
+  const [inputValue, setInputValue] = useState("");
   const showModalView = searchParams.get("view");
-  const perPage = 10;
-
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const pageSize = 10;
   const {
-    data: product,
-    isLoading,
-    isFetching,
-    isError,
+    data: blacklist,
     error,
-  } = useGetAllProductsQuery({ perPage, page: currentPage });
-
-  const filterProduct = product
-    ? product.data.data.filter((prod) => prod.isBlacklisted)
+    isLoading,
+    isError,
+    isFetching,
+  } = useGetAllBlacklistQuery({ pageSize, page: currentPage });
+  const theadData = BlackListData.head;
+  const tbodyData = blacklist
+    ? blacklist.data.map((data, i) => ({
+        index: i + 1,
+        ...data,
+        action: "",
+      }))
     : [];
-
-  const transformedProduct = filterProduct.map((item, idx) => {
-    return [
-      idx + 1,
-      item.id,
-      item.productName,
-      item.productDescription,
-      item.isBlacklisted,
-      formatDate(item.createdAt),
-      formatDate(item.updatedAt),
-      "",
-    ];
-  });
-
-  const theadData = ProductData.head;
-  const tbodyData = transformedProduct;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleOnViewClick = (rowIdx: number) => {
-    setRowIndex(rowIdx);
-    setSearchParams({ view: "true" });
+  const handleOnViewClick = (id: dataType) => {
+    setSearchParams({ view: "true", id: `${id}` });
   };
 
-  const inputDataProdView = theadData.slice(2).map((label, index) => {
-    if (rowIndex !== null && tbodyData[rowIndex]) {
-      return {
-        ph: label.charAt(0).toUpperCase() + label.slice(1).toLowerCase(),
-        value: tbodyData[rowIndex][index + 2] || tbodyData[0][index + 2] || "",
-      };
-    } else {
-      return {
-        ph: label.charAt(0).toUpperCase() + label.slice(1).toLowerCase(),
-        value: "",
-      };
+  const getUniqIdCallback = (id: dataType) => {
+    setSearchParams({ view: "true", id: `${id}` });
+  };
+
+  const handleOnChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(evt.target.value);
+  };
+
+  const handleOnKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+    if (evt.key === "Enter" && inputValue !== "") {
+      navigate(`/blacklist/search/?query=${inputValue}`);
+      setInputValue("");
     }
-  });
+  };
+
+  const handleOnClick = () => {
+    if (inputValue !== "") {
+      navigate(`/blacklist/search/?query=${inputValue}`);
+      setInputValue("");
+    }
+  };
 
   const tableData = (
-    row: Trow[],
-    data: Trow,
-    colIdx: number,
-    rowIdx: number
+    id: dataType,
+    row: dataType[],
+    data: dataType,
+    colIdx: number
   ) => {
     const lstIdx = row.length - 1;
     return (
       <td key={colIdx}>
         {colIdx === lstIdx ? (
           <span className={styles.btnAction}>
-            <IoEyeSharp onClick={() => handleOnViewClick(rowIdx)} />
+            <IoEyeSharp onClick={() => handleOnViewClick(id)} />
           </span>
-        ) : colIdx === 4 ? (
-          row[colIdx] && (
-            <span className={styles.checkIcon}>
-              <TiCancelOutline size={15} />
-            </span>
-          )
-        ) : colIdx === 1 ? (
-          data.toString().substring(0, 5)
-        ) : colIdx === 3 ? (
+        ) : colIdx === 2 ? (
           <>{sliceText(data as string, 15)}</>
+        ) : colIdx === 4 ? (
+          <>{formatDate(data as string)}</>
         ) : (
           data
         )}
       </td>
     );
   };
+
+  useEffect(() => {
+    if (blacklist?.data) dispatch(setBlacklist(blacklist.data));
+  }, [blacklist?.data, dispatch]);
 
   useEffect(() => {
     document.title = `BlackGuard | ViewItems`;
@@ -110,25 +107,42 @@ export default function UserItemViewPage() {
 
   return (
     <>
-      <ViewModal
-        type="product"
-        showModal={showModalView}
-        title="Product Details"
-        inputData={inputDataProdView}
-      />
+      {showModalView && (
+        <ViewBlacklistModal
+          showModal={showModalView}
+          title="Blacklist Details"
+        />
+      )}
+
       <div className={styles.container}>
         <Navbar />
         <div className={styles.content}>
+          <div className={styles.header}>
+            <h4 className={styles.title}>Blacklisted Products</h4>
+            <div className={styles.inputContainer}>
+              <span className={styles.btnSearch} onClick={handleOnClick}>
+                <FiSearch />
+              </span>
+              <CustomInput
+                placeholder="Search Blacklisted Product"
+                value={inputValue}
+                onChange={handleOnChange}
+                onKeyDown={handleOnKeyDown}
+                xtraStyle={styles.input}
+              />
+            </div>
+          </div>
           <Table
-            title="BlackListed Items"
             isCustomTr={false}
-            tableDataElem={(row, data, colIdx, rowIdx) =>
-              tableData(row, data, colIdx, rowIdx)
+            keysToRemove={["blacklistId"]}
+            tableDataElem={(id, row, data, colIdx) =>
+              tableData(id, row, data, colIdx)
             }
             theadData={theadData}
             tbodyData={tbodyData}
-            totalResults={product?.data.totalCount || 0}
-            resultsPerPage={perPage}
+            getUniqIdCallback={getUniqIdCallback}
+            totalResults={blacklist?.totalCount || 0}
+            resultsPerPage={pageSize}
             maxVisiblePages={5}
             handlePageChange={handlePageChange}
             emptyText="No Product Blacklisted Yet!"
@@ -139,10 +153,11 @@ export default function UserItemViewPage() {
               (error as RTKError)?.error.split(":")[1] ||
               "An error occurred"
             }
-            xtraStyle={styles.table}
           />
         </div>
       </div>
     </>
   );
 }
+
+export const MemoizedUserItemView = memo(UserItemViewPage);

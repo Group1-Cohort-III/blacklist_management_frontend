@@ -1,6 +1,5 @@
 import DashboardLayout from "../../components/DashboardLayout";
 import DeleteModal from "../../components/Modals/DeleteModal";
-import ViewModal from "../../components/Modals/ViewModal";
 import AddModal from "../../components/Modals/AddModal";
 import { useSearchParams } from "react-router-dom";
 import { MdOutlineEdit } from "react-icons/md";
@@ -9,16 +8,19 @@ import { IoEyeSharp } from "react-icons/io5";
 import Table from "../../components/Table";
 import styles from "./styles.module.scss";
 import { BiTrash } from "react-icons/bi";
-import { useState } from "react";
-import { useAppSelector } from "../../hooks/store.hook";
+import { memo, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/store.hook";
 import { UserData } from "../../interfaces/slice.interface";
 import { decodeUserData } from "../../utils/jwt.util";
 import DashboardBlacklist from "../DashboardBlacklist";
 import { useGetAllUsersQuery } from "../../services/user.api";
 import { constant } from "../../configs/constant.config";
-import { Trow } from "../../interfaces/props.interface";
+import { dataType } from "../../interfaces/props.interface";
 import { RTKError, RTKUpdErr } from "../../interfaces/generic.interface";
 import EditModalUser from "../../components/Modals/EditModalUser";
+import { setUsers } from "../../store/slices/general.slice";
+import ViewUserModal from "../../components/Modals/ViewUserModal";
+import CustomButton from "../../components/common/CustomButton";
 
 export default function DashboardUsers() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,9 +30,11 @@ export default function DashboardUsers() {
   const showModalView = searchParams.get("view");
   const showModalEdit = searchParams.get("edit");
   const { token } = useAppSelector((state) => state.auth);
-  const { role } = decodeUserData(token as string) as UserData;
-  const [rowIndex, setRowIndex] = useState<number | null>(null);
+  const { role, email: loginEmail } = decodeUserData(
+    token as string
+  ) as UserData;
   const { adminEmail } = constant;
+  const dispatch = useAppDispatch();
   const perPage = 10;
 
   const {
@@ -41,80 +45,61 @@ export default function DashboardUsers() {
     error,
   } = useGetAllUsersQuery({ perPage, page: currentPage });
 
+  useEffect(() => {
+    if (users?.data) dispatch(setUsers(users.data.data));
+  }, [users, dispatch]);
+
   // REDIRECT TO BLACKLIST DASHBOARD IF NOT USERADMIN
   if (role !== "UserAdmin" && role) {
     return <DashboardBlacklist />;
   }
 
   const filterUsers = users
-    ? users.data.data.filter((user) => user.email !== adminEmail)
+    ? users.data.data
+        .filter(
+          (user) => user.email !== adminEmail && user.email !== loginEmail
+        )
+        .map((data, i) => ({ index: i + 1, ...data, action: "" }))
     : [];
 
-  const transformedUsers = filterUsers.map((item, idx) => {
-    return [
-      idx + 1,
-      item.id,
-      item.firstName || "None",
-      item.lastName || "None",
-      item.email,
-      item.isPasswordSet,
-      "",
-    ];
-  });
-
   const theadData = UsersData.head;
-  const tbodyData = transformedUsers;
+  const tbodyData = filterUsers;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleOnViewClick = (rowIdx: number) => {
-    setRowIndex(rowIdx);
-    setSearchParams({ view: "true" });
+  const handleOnViewClick = (id: dataType) => {
+    setSearchParams({ view: "true", id: `${id}` });
   };
 
-  const handleOnEditClick = (userEmail: Trow, rowIdx: number) => {
-    setRowIndex(rowIdx);
-    setSearchParams({ edit: "true", id: `${userEmail}` });
+  const handleOnEditClick = (id: dataType) => {
+    setSearchParams({ edit: "true", id: `${id}` });
   };
 
-  const handleOnDeleteClick = (userEmail: Trow, rowIdx: number) => {
-    setRowIndex(rowIdx);
-    setSearchParams({ del: "true", id: `${userEmail}` });
+  const handleOnDeleteClick = (userEmail: dataType) => {
+    setSearchParams({ del: "true", email: `${userEmail}` });
   };
-
-  const inputDataUserView = theadData.slice(2).map((label, index) => {
-    if (rowIndex !== null && tbodyData[rowIndex]) {
-      return {
-        ph: label.charAt(0).toUpperCase() + label.slice(1).toLowerCase(),
-        value: tbodyData[rowIndex][index + 2] || tbodyData[0][index + 2] || "",
-      };
-    } else {
-      return {
-        ph: label.charAt(0).toUpperCase() + label.slice(1).toLowerCase(),
-        value: "",
-      };
-    }
-  });
 
   const tableData = (
-    row: Trow[],
-    data: Trow,
-    colIdx: number,
-    rowIdx: number
+    id: dataType,
+    row: dataType[],
+    data: dataType,
+    colIdx: number
   ) => {
     const lstIdx = row.length - 1;
     return (
       <td key={colIdx}>
         {colIdx === lstIdx ? (
           <span className={styles.btnAction}>
-            <IoEyeSharp onClick={() => handleOnViewClick(rowIdx)} />
-            <MdOutlineEdit onClick={() => handleOnEditClick(row[4], rowIdx)} />
-            <BiTrash onClick={() => handleOnDeleteClick(row[4], rowIdx)} />
+            <IoEyeSharp onClick={() => handleOnViewClick(id)} />
+            <MdOutlineEdit onClick={() => handleOnEditClick(id)} />
+            <BiTrash onClick={() => handleOnDeleteClick(row[3])} />
           </span>
-        ) : colIdx === 5 ? (
+        ) : colIdx === 4 ? (
           <>{data ? "Yes" : "No"}</>
+        ) : colIdx === 1 || colIdx === 2 ? (
+          <>{!data ? "None" : data}</>
         ) : (
           data
         )}
@@ -132,12 +117,7 @@ export default function DashboardUsers() {
         />
       )}
       {showModalView && (
-        <ViewModal
-          type="user"
-          showModal={showModalView}
-          title="User Details"
-          inputData={inputDataUserView}
-        />
+        <ViewUserModal showModal={showModalView} title="User Details" />
       )}
       {showModalEdit && <EditModalUser showModal={showModalEdit} />}
       <DeleteModal
@@ -146,31 +126,39 @@ export default function DashboardUsers() {
         subtitle={"Are you sure you want to delete user?"}
       />
       <DashboardLayout title="Users">
-        <Table
-          title="All Users"
-          showBtn
-          isCustomTr={false}
-          tableDataElem={(row, data, colIdx, rowIdx) =>
-            tableData(row, data, colIdx, rowIdx)
-          }
-          onClick={() => setSearchParams({ add: "true" })}
-          btnTitle="Add User"
-          theadData={theadData}
-          tbodyData={tbodyData}
-          totalResults={users?.data.totalCount || 0}
-          resultsPerPage={perPage}
-          maxVisiblePages={5}
-          handlePageChange={handlePageChange}
-          emptyText="No User Added Yet!"
-          showLoader={isLoading || isFetching}
-          isError={isError}
-          errMsg={
-            (error as RTKUpdErr)?.data ||
-            (error as RTKError)?.error.split(":")[1] ||
-            "An error occurred"
-          }
-        />
+        <div className={styles.content}>
+          <div className={styles.header}>
+            <h4 className={styles.title}>All Users</h4>
+            <CustomButton
+              title="Add User"
+              onClick={() => setSearchParams({ add: "true" })}
+            />
+          </div>
+          <Table
+            isCustomTr={false}
+            keysToRemove={["id", "gender", "roles", "phoneNumber"]}
+            tableDataElem={(id, row, data, colIdx) =>
+              tableData(id, row, data, colIdx)
+            }
+            theadData={theadData}
+            tbodyData={tbodyData}
+            totalResults={users?.data.totalCount || 0}
+            resultsPerPage={perPage}
+            maxVisiblePages={5}
+            handlePageChange={handlePageChange}
+            emptyText="No User Added Yet!"
+            showLoader={isLoading || isFetching}
+            isError={isError}
+            errMsg={
+              (error as RTKUpdErr)?.data ||
+              (error as RTKError)?.error.split(":")[1] ||
+              "An error occurred"
+            }
+          />
+        </div>
       </DashboardLayout>
     </>
   );
 }
+
+export const MemoizedUser = memo(DashboardUsers);

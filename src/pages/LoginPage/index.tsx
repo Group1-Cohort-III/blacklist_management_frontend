@@ -74,11 +74,10 @@ export default function LoginPage() {
 
   useEffect(() => {
     document.title = `BlackGuard | Login`;
-    if (!message) {
-      dispatch(resetMsg());
-    }
+
     return () => {
       document.title = "BlackGuard";
+      if (message) dispatch(resetMsg());
     };
   }, [dispatch, message]);
 

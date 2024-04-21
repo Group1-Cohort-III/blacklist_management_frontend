@@ -117,7 +117,7 @@ export interface Product {
   id: string;
   createdAt: string;
   updatedAt: string;
-  createdBy: null;
+  createdBy: string | null;
   isDeleted: boolean;
 }
 
@@ -187,6 +187,7 @@ export interface BlacklistResp {
 export interface Blacklist {
   blacklistId: string;
   productName: string;
+  productDescription: string;
   criteriaName: string;
   createdAt: string;
 }
