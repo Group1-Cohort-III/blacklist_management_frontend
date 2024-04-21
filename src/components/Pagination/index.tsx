@@ -1,7 +1,6 @@
 import { PiCaretRightBold, PiCaretLeftBold } from "react-icons/pi";
-import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import styles from "./styles.module.scss";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   totalResults: number;
@@ -20,7 +19,6 @@ const Pagination = ({
   const totalPages = Math.ceil(totalResults / resultsPerPage);
   const startResult = (currentPage - 1) * resultsPerPage + 1;
   const endResult = Math.min(currentPage * resultsPerPage, totalResults);
-  const [value, setValue] = useState(1);
 
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -58,19 +56,6 @@ const Pagination = ({
     }
   };
 
-  const handleOnChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    console.log(+evt.target.value);
-    setValue(+evt.target.value);
-  };
-
-  const incrementVal = () => {
-    setValue((prev) => prev + 1);
-  };
-
-  const decrementVal = () => {
-    setValue((prev) => (prev === 1 ? 1 : prev - 1));
-  };
-
   return (
     <div className={styles.pagination_container}>
       <div>
@@ -106,22 +91,6 @@ const Pagination = ({
           >
             <PiCaretRightBold />
           </button>
-        </div>
-        <div className={styles.input_container}>
-          <input
-            type="number"
-            min={1}
-            value={value}
-            onChange={handleOnChange}
-          />
-          <div className={styles.btn_wrapper}>
-            <button>
-              <GoTriangleUp onClick={incrementVal} />
-            </button>
-            <button disabled={value === 1}>
-              <GoTriangleDown onClick={decrementVal} />
-            </button>
-          </div>
         </div>
       </div>
     </div>

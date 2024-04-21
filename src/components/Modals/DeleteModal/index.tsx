@@ -1,13 +1,13 @@
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useDeleteProductMutation } from "../../../services/product.api";
+import { useDeleteUserMutation } from "../../../services/user.api";
+import { RTKUpdErr } from "../../../interfaces/generic.interface";
 import CustomButton from "../../common/CustomButton";
 import CustomHeader from "../../common/CustomHeader";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import ModalLayout from "../ModalLayout";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import Toast from "../../Toast";
-import { RTKUpdErr } from "../../../interfaces/generic.interface";
-import { useDeleteUserMutation } from "../../../services/user.api";
-import { useDeleteProductMutation } from "../../../services/product.api";
 
 interface Props {
   showModal: string | null;
@@ -26,8 +26,8 @@ export default function DeleteModal({
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const searchParams = useSearchParams()[0];
-  const productID = searchParams.get("index");
-  const userEmail = searchParams.get("id");
+  const productID = searchParams.get("id");
+  const userEmail = searchParams.get("email");
 
   const [
     deleteUser,
@@ -58,6 +58,7 @@ export default function DeleteModal({
       deleteUser(userEmail as string);
       return;
     }
+
     if (type === "Product") {
       if (productID) deleteProd(productID);
       return;

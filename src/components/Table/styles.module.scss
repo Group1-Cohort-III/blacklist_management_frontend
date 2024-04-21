@@ -1,29 +1,16 @@
 .table {
-  @apply mb-6 mx-auto relative overflow-x-auto sm:rounded-lg w-full shadow-md;
-  @apply rounded-md bg-white mt-5;
+  @apply w-full overflow-x-auto;
 
   .empty_text {
-    @apply text-center font-bold my-4 text-lg text-primary;
+    @apply text-center font-bold my-4 pb-6 text-lg text-primary;
   }
 
   .errTxt {
-    @apply text-center font-bold my-4 text-base text-secondary;
+    @apply text-center font-bold my-4 pb-6 text-base text-secondary;
   }
 
   .loader {
     @apply flex justify-center items-center py-5;
-  }
-
-  .header {
-    @apply flex flex-wrap justify-between items-center px-5 py-1;
-
-    .title {
-      @apply font-semibold text-lg mt-5 mb-2 text-gray-600;
-    }
-
-    .btnContainer {
-      @apply flex flex-wrap gap-y-2 md:gap-y-0 justify-end items-center gap-x-2 lg:gap-x-3 mt-3;
-    }
   }
 
   table {

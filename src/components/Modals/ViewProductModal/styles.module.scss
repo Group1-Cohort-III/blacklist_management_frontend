@@ -1,0 +1,41 @@
+.container {
+  @apply relative;
+
+  .loader {
+    @apply absolute top-1/2 translate-y-[-50%] inset-x-0 text-center mx-auto w-full;
+  }
+
+  .errTxt {
+    @apply text-secondary text-center font-normal;
+  }
+
+  ul {
+    @apply flex flex-col gap-y-2 my-3;
+
+    li {
+      @apply border-b border-gray-2;
+      h2 {
+        @apply text-gray-4 text-sm uppercase font-medium;
+      }
+      p {
+        @apply text-gray-4;
+      }
+    }
+
+    li:last-child {
+      @apply border-none;
+    }
+  }
+
+  .notFound {
+    @apply text-center font-medium my-3;
+  }
+
+  .btnContainer {
+    @apply flex justify-center;
+
+    button {
+      @apply px-5;
+    }
+  }
+}

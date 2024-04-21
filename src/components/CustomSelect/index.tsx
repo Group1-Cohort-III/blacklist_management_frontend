@@ -1,28 +1,29 @@
+import { ICustomSelect, IOpt } from "../../interfaces/props.interface";
+import { selectStyles } from "../../utils/selector.style.util";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { ComponentType, useEffect, useState } from "react";
 import Select, {
   DropdownIndicatorProps,
+  GroupBase,
   MenuListProps,
   components,
 } from "react-select";
-import { ICustomSelect, IOpt } from "../../interfaces/props.interface";
-import { FiChevronUp, FiChevronDown } from "react-icons/fi";
-import { useEffect, useState } from "react";
 
 export default function CustomSelect({
   options,
   placeholder,
-  isMenuOpen,
-  styles,
   dropDownColor,
-  setIsMenuOpen,
   onSelect,
   prefillId,
   loadMore,
   inProgress,
   isAsync,
   isError,
+  isDisabled = false,
   showBtn,
 }: ICustomSelect) {
   const [value, setValue] = useState<IOpt | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const DropdownIndicator = (props: DropdownIndicatorProps) => (
     <components.DropdownIndicator {...props}>
@@ -73,11 +74,19 @@ export default function CustomSelect({
   return (
     <Select
       options={options}
-      components={{ DropdownIndicator, MenuList }}
+      components={{
+        DropdownIndicator: DropdownIndicator as ComponentType<
+          DropdownIndicatorProps<IOpt, boolean, GroupBase<IOpt>>
+        >,
+        MenuList: MenuList as ComponentType<
+          MenuListProps<IOpt, boolean, GroupBase<IOpt>>
+        >,
+      }}
+      isSearchable
       value={value}
-      isSearchable={false}
-      styles={styles}
+      isDisabled={isDisabled}      
       placeholder={placeholder}
+      styles={selectStyles(isMenuOpen, "100%")}      
       onMenuOpen={() => setIsMenuOpen(true)}
       onMenuClose={() => setIsMenuOpen(false)}
       onChange={(newValue) => handleOnChange(newValue as IOpt)}
