@@ -28,7 +28,7 @@ const productApi = baseApi.injectEndpoints({
       query: ({ perPage, page }) => `Product?perPage=${perPage}&page=${page}`,
       transformResponse: (response: GetAllProductsResp) => response,
       transformErrorResponse: (response) => response,
-      providesTags: ["Products"],
+      providesTags: ["Products", "Blacklists"],
     }),
     // GET A SINGLE PRODUCT
     getAProduct: builder.query<GetAProductResp, string>({

@@ -16,42 +16,43 @@ export interface ICustomSelect {
   options: IOpt[];
   styles?: StylesConfig<unknown, false>;
   placeholder?: string;
-  isMenuOpen: boolean;
   dropDownColor?: string;
-  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onSelect: (val: IOpt) => void;
   prefillId?: string | number;
   isAsync?: boolean;
   inProgress?: boolean;
   isError?: boolean;
   showBtn?: boolean;
+  isDisabled?: boolean;
   loadMore?: Dispatch<SetStateAction<number>>
 }
 
-export type Trow = string | number | boolean;
+export type dataType = string | number | boolean | null;
+
+export type Trow = {
+  [key: string]: dataType;
+};
 
 export interface TableProps {
-  title: string;
-  btnTitle?: string;
-  showBtn?: boolean;
   isCustomTr?: boolean;
-  showFilter?: boolean;
   tableDataElem?: (
-    row: Trow[],
-    data: Trow,
+    id: dataType,
+    row: dataType[],
+    data: dataType,
     colIndex: number,
     rowIndex: number
   ) => ReactElement<HTMLTableCellElement>;
   theadData: string[];
-  tbodyData: Trow[][];
+  tbodyData: Trow[];
   totalResults: number;
   resultsPerPage: number;
   maxVisiblePages: number;
   xtraStyle?: string;
   handlePageChange: (page: number) => void;
-  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   emptyText: string;
   showLoader?: boolean;
   isError?: boolean;
   errMsg?: string;
+  getUniqIdCallback?: (id: dataType) => void;
+  keysToRemove?: string[];
 }

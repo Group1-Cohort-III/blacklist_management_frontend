@@ -1,3 +1,4 @@
+import { Blacklist, Product, User } from "./services.interface";
 import { SerializedError } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
@@ -28,11 +29,8 @@ export interface SetPasswordSliceData {
   status: number | null;
 }
 
-export interface ProdEditData {
-  ph: string;
-  value: string;
-}
-
 export interface GeneralSliceData {
-  product: ProdEditData[];
+  blacklist: Blacklist[];
+  products: Product[];
+  users: User[]
 }

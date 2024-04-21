@@ -1,38 +1,29 @@
-import { TableProps } from "../../interfaces/props.interface";
-import CustomButton from "../common/CustomButton";
+import { TableProps, dataType } from "../../interfaces/props.interface";
 import { PropagateLoader } from "react-spinners";
 import styles from "./styles.module.scss";
 import Pagination from "../Pagination";
 
 export default function Table({
-  title,
-  btnTitle,
-  showBtn,
   theadData,
   tbodyData,
   xtraStyle,
   isCustomTr = true,
   tableDataElem,
   handlePageChange,
-  onClick,
   totalResults,
   resultsPerPage,
   emptyText,
   showLoader = false,
   isError = false,
   errMsg,
+  getUniqIdCallback,
+  keysToRemove,
 }: TableProps) {
+  const handleOnTrClick = (id: dataType) => {
+    getUniqIdCallback && getUniqIdCallback(id);
+  };
   return (
     <div className={`${styles.table} ${xtraStyle}`}>
-      <div className={styles.header}>
-        <h4 className={styles.title}>{title}</h4>
-        <div className={styles.btnContainer}>
-          {showBtn && (
-            <CustomButton title={btnTitle ? btnTitle : ""} onClick={onClick} />
-          )}
-        </div>
-      </div>
-
       {showLoader ? (
         <div className={styles.loader}>
           <PropagateLoader color="#18425D" size={10} />
@@ -53,17 +44,34 @@ export default function Table({
             </tr>
           </thead>
           <tbody>
-            {tbodyData.map((row, rowIdx) => (
-              <tr key={rowIdx}>
-                {row.map((data, colIdx) =>
-                  isCustomTr ? (
-                    <td key={colIdx}>{data}</td>
-                  ) : (
-                    tableDataElem && tableDataElem(row, data, colIdx, rowIdx)
-                  )
-                )}
-              </tr>
-            ))}
+            {tbodyData.map(({ id, ...rest }, rowIdx) => {
+              const removedKey = keysToRemove ? rest[keysToRemove[0]] : id;
+              const newObj = { ...rest };
+              if (keysToRemove) {
+                keysToRemove.forEach((key) => delete newObj[key]);
+              }
+              return (
+                <tr
+                  key={rowIdx}
+                  onClick={() => handleOnTrClick(removedKey || id)}
+                >
+                  {Object.values(newObj).map((data, colIdx) =>
+                    isCustomTr ? (
+                      <td key={colIdx}>{data}</td>
+                    ) : (
+                      tableDataElem &&
+                      tableDataElem(
+                        removedKey || id,
+                        Object.values(newObj),
+                        data,
+                        colIdx,
+                        rowIdx
+                      )
+                    )
+                  )}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

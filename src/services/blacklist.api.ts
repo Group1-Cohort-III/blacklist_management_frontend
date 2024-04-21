@@ -69,6 +69,7 @@ export const {
   useBlacklistMutation,
   useGetABlacklistQuery,
   useGetAllBlacklistQuery,
+  useLazyGetAllBlacklistQuery,
   useRemoveBlacklistMutation,
   useGetBlacklistCriteriaQuery
 } = blacklistApi;

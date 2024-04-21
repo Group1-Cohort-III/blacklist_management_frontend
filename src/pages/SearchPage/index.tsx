@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useState, KeyboardEvent, memo } from "react";
 import ViewBlacklistModal from "../../components/Modals/ViewBlacklistModal";
-import { useGetAllBlacklistQuery } from "../../services/blacklist.api";
+import { useLazyGetAllBlacklistQuery } from "../../services/blacklist.api";
 import { RTKError, RTKUpdErr } from "../../interfaces/generic.interface";
 import { CustomInput } from "../../components/common/CustomInput";
-import { setBlacklist } from "../../store/slices/general.slice";
+import { reset, setBlacklist } from "../../store/slices/general.slice";
 import { dataType } from "../../interfaces/props.interface";
 import { formatDate } from "../../utils/formatdate.util";
 import { useAppDispatch } from "../../hooks/store.hook";
@@ -16,24 +16,21 @@ import Table from "../../components/Table";
 import styles from "./styles.module.scss";
 import { FiSearch } from "react-icons/fi";
 
-export default function UserItemViewPage() {
+export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [getBlacklist, result] = useLazyGetAllBlacklistQuery();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFilter, setIsFilter] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const showModalView = searchParams.get("view");
+  const getQueryStr = searchParams.get("query");
+  const [queryString, setQueryStrig] = useState(getQueryStr);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const pageSize = 10;
-  const {
-    data: blacklist,
-    error,
-    isLoading,
-    isError,
-    isFetching,
-  } = useGetAllBlacklistQuery({ pageSize, page: currentPage });
+  const navigate = useNavigate();
   const theadData = BlackListData.head;
-  const tbodyData = blacklist
-    ? blacklist.data.map((data, i) => ({
+  const tbodyData = result.data
+    ? result.data.data.map((data, i) => ({
         index: i + 1,
         ...data,
         action: "",
@@ -58,15 +55,19 @@ export default function UserItemViewPage() {
 
   const handleOnKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
     if (evt.key === "Enter" && inputValue !== "") {
+      getBlacklist({ filterValue: inputValue });
+      setIsFilter(true);
       navigate(`/blacklist/search/?query=${inputValue}`);
-      setInputValue("");
+      setQueryStrig(inputValue);
     }
   };
 
   const handleOnClick = () => {
     if (inputValue !== "") {
+      getBlacklist({ filterValue: inputValue });
+      setIsFilter(true);
       navigate(`/blacklist/search/?query=${inputValue}`);
-      setInputValue("");
+      setQueryStrig(inputValue);
     }
   };
 
@@ -95,15 +96,32 @@ export default function UserItemViewPage() {
   };
 
   useEffect(() => {
-    if (blacklist?.data) dispatch(setBlacklist(blacklist.data));
-  }, [blacklist?.data, dispatch]);
+    if (!isFilter) {
+      getBlacklist(
+        !queryString
+          ? { pageSize, page: currentPage }
+          : { filterValue: queryString }
+      );
+    }
+
+    if (result.data) dispatch(setBlacklist(result.data.data));
+
+    return () => {
+      dispatch(reset());
+      setIsFilter(true);
+    };
+  }, [result.data, dispatch, isFilter, getBlacklist, currentPage, queryString]);
 
   useEffect(() => {
-    document.title = `BlackGuard | ViewItems`;
+    document.title = `${
+      queryString
+        ? `Search results - ${queryString} | BlackGuard`
+        : "Search | BlackGuard"
+    }`;
     return () => {
       document.title = "BlackGuard";
     };
-  }, []);
+  }, [queryString]);
 
   return (
     <>
@@ -118,13 +136,22 @@ export default function UserItemViewPage() {
         <Navbar />
         <div className={styles.content}>
           <div className={styles.header}>
-            <h4 className={styles.title}>Blacklisted Products</h4>
+            <h4 className={styles.title}>
+              {queryString ? (
+                <>
+                  <span>Search Result - </span>{" "}
+                  <span className={styles.queryString}>{queryString}</span>
+                </>
+              ) : (
+                <span className={styles.queryString}>Search</span>
+              )}
+            </h4>
             <div className={styles.inputContainer}>
               <span className={styles.btnSearch} onClick={handleOnClick}>
                 <FiSearch />
               </span>
               <CustomInput
-                placeholder="Search Blacklisted Product"
+                placeholder="Search Blacklisted Product Name"
                 value={inputValue}
                 onChange={handleOnChange}
                 onKeyDown={handleOnKeyDown}
@@ -141,16 +168,16 @@ export default function UserItemViewPage() {
             theadData={theadData}
             tbodyData={tbodyData}
             getUniqIdCallback={getUniqIdCallback}
-            totalResults={blacklist?.totalCount || 0}
+            totalResults={result.data?.totalCount || 0}
             resultsPerPage={pageSize}
             maxVisiblePages={5}
             handlePageChange={handlePageChange}
-            emptyText="No Product Blacklisted Yet!"
-            showLoader={isLoading || isFetching}
-            isError={isError}
+            emptyText="No matching records found"
+            showLoader={result.isLoading || result.isFetching}
+            isError={result.isError}
             errMsg={
-              (error as RTKUpdErr)?.data ||
-              (error as RTKError)?.error.split(":")[1] ||
+              (result.error as RTKUpdErr)?.data ||
+              (result.error as RTKError)?.error.split(":")[1] ||
               "An error occurred"
             }
           />
@@ -160,4 +187,4 @@ export default function UserItemViewPage() {
   );
 }
 
-export const MemoizedUserItemView = memo(UserItemViewPage);
+export const MemoizedSearch = memo(SearchPage);

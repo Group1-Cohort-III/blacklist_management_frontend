@@ -4,6 +4,8 @@ import SelectOption from "../pages/SelectOption";
 import { logoutUser } from "../store/slices/auth.slice";
 import { useNavigate } from "react-router-dom";
 import { useEffect, ReactNode } from "react";
+import { reset } from "../store/slices/general.slice";
+import { persistor } from "../store/store";
 
 interface Props {
   children: ReactNode;
@@ -19,6 +21,8 @@ export default function PrivateRouter({ children }: Props) {
     if (isExpired || hasTokenExpired) {
       navigate("/login", { replace: true });
       dispatch(logoutUser());
+      dispatch(reset());
+      persistor.purge();
     }
   }, [dispatch, hasTokenExpired, isExpired, navigate]);
 

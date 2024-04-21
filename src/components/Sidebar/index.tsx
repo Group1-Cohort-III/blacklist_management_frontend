@@ -1,15 +1,19 @@
-import { MdClose, MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { IoMdLogOut, IoMdSettings } from "react-icons/io";
-import { TiCancelOutline } from "react-icons/ti";
+import { IoMdLogOut } from "react-icons/io";
 import styles from "./styles.module.scss";
-import { FaUsers } from "react-icons/fa";
 import { DashLogo } from "../../assets";
 import { AnimatePresence, motion } from "framer-motion";
-import { framerText, sidebarAnimate } from "../../utils/data.util";
+import {
+  framerText,
+  sidebarAnimate,
+  sidebarLinksFunc,
+} from "../../utils/data.util";
 import { useAppDispatch } from "../../hooks/store.hook";
 import { logoutUser } from "../../store/slices/auth.slice";
 import { UserData } from "../../interfaces/slice.interface";
+import { reset } from "../../store/slices/general.slice";
+import { persistor } from "../../store/store";
 
 interface Props {
   userData: UserData | null;
@@ -22,33 +26,13 @@ export default function Sidebar({ userData }: Props) {
   const dispatch = useAppDispatch();
   const showSidebar = searchParams.get("show");
   const role = userData?.role;
-
-  const sidebarLinks =
-    role === "UserAdmin"
-      ? [
-          { title: "Users", Icon: FaUsers, path: "/users" },
-          {
-            title: "Products",
-            Icon: MdOutlineProductionQuantityLimits,
-            path: "/products",
-          },
-          { title: "Settings", Icon: IoMdSettings, path: "/settings" },
-        ]
-      : role === "BlackListAdmin"
-      ? [
-          {
-            title: "Products",
-            Icon: MdOutlineProductionQuantityLimits,
-            path: "/products",
-          },
-          { title: "BlackList", Icon: TiCancelOutline, path: "/blacklist" },
-          { title: "Settings", Icon: IoMdSettings, path: "/settings" },
-        ]
-      : [];
+  const sidebarLinks = sidebarLinksFunc(role as string);
 
   const logout = () => {
     dispatch(logoutUser());
+    dispatch(reset());
     navigate("/", { replace: true });
+    persistor.purge();
   };
 
   return (

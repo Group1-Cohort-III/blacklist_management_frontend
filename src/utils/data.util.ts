@@ -1,3 +1,10 @@
+import { FaUsers } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { TiCancelOutline } from "react-icons/ti";
+import { formatDate } from "./formatdate.util";
+import { UserData } from "../interfaces/slice.interface";
+
 export const UserViewData = {
   head: ["#", "NAME", "CATEGORY", "DESCRIPTION", "REASON", "DATE"],
   body: [
@@ -11,7 +18,7 @@ export const UserViewData = {
 };
 
 export const UsersData = {
-  head: ["#", "ID", "First Name", "Last Name", "Email", "Set Password", ""],
+  head: ["#", "First Name", "Last Name", "Email", "Set Password", ""],
   body: [
     [
       "1",
@@ -71,7 +78,7 @@ export const UsersData = {
 };
 
 export const ProductData = {
-  head: ["#", "ID", "NAME", "DESCRIPTION", "STATUS", "CREATED", "UPDATED", ""],
+  head: ["#", "NAME", "DESCRIPTION", "STATUS", "CREATED", ""],
   body: [
     [
       "1",
@@ -107,7 +114,7 @@ export const ProductData = {
 };
 
 export const BlackListData = {
-  head: ["#", "ID", "PRODUCT NAME", "CRITERIA", "DATE", ""],
+  head: ["#", "PRODUCT NAME", "DESCRIPTION", "CRITERIA", "DATE", ""],
   body: [
     ["1", "Lenovo", "Computer", "14’ Screen Black", "Broken", "24/03/2024", ""],
     ["2", "iPhone", "Phone", "Sleek Black", "Good condition", "25/03/2024", ""],
@@ -117,6 +124,29 @@ export const BlackListData = {
     ["6", "iPhone", "Phone", "Sleek Black", "Good condition", "21/03/2024", ""],
   ],
 };
+
+export const sidebarLinksFunc = (role: string) =>
+  role === "UserAdmin"
+    ? [
+        { title: "Users", Icon: FaUsers, path: "/users" },
+        {
+          title: "Products",
+          Icon: MdOutlineProductionQuantityLimits,
+          path: "/products",
+        },
+        { title: "Settings", Icon: IoMdSettings, path: "/settings" },
+      ]
+    : role === "BlackListAdmin"
+    ? [
+        { title: "BlackList", Icon: TiCancelOutline, path: "/blacklist" },
+        {
+          title: "Products",
+          Icon: MdOutlineProductionQuantityLimits,
+          path: "/products",
+        },
+        { title: "Settings", Icon: IoMdSettings, path: "/settings" },
+      ]
+    : [];
 
 export const inputData = ["Email"];
 
@@ -207,6 +237,22 @@ export const selectOptData = [
   { title: "Yes, I have a password!", key: "yes" },
   { title: "No, I don't have a password!", key: "no" },
 ];
+
+export const userDataFunc = (userInfo: UserData | null) => {
+  const fname = userInfo?.given_name.split(" ")[0];
+  const lname = userInfo?.given_name.split(" ")[1];
+
+  return [
+    { label: "First Name", data: fname || "None" },
+    { label: "Last Name", data: lname || "None" },
+    { label: "Email", data: userInfo?.email || "None" },
+    { label: "Role", data: userInfo?.role || "None" },
+    { label: "Date Created", data: formatDate("2024-04-11T21:43:49.6089055") },
+    { label: "Current Password", data: "" },
+    { label: "New Password", data: "" },
+    { label: "Confirm Password", data: "" },
+  ];
+};
 
 export const modalAnimate = {
   hidden: { opacity: 0, scale: 0 },

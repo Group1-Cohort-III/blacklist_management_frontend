@@ -16,11 +16,11 @@ export const setPassword = createAsyncThunk(
       );
 
       const data = resp.data;
-      console.log("SUCCESS => ", data);
+      // console.log("SUCCESS => ", data);
       return data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log("ERROR => ", error);
+      // console.log("ERROR => ", error);
       if (error.response) {
         const { data, status } = error.response;
         const errorMsg = data.message || error.message;

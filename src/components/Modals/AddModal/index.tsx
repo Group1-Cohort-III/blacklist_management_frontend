@@ -1,14 +1,14 @@
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   useCreateProductMutation,
+  useGetAProductQuery,
   useGetAllProductsQuery,
 } from "../../../services/product.api";
 import { useCreateUserMutation } from "../../../services/user.api";
-import { selectStyles } from "../../../utils/selector.style.util";
 import { RTKError } from "../../../interfaces/generic.interface";
 import { userOpts } from "../../../utils/data.util";
 import { isValidEmail } from "../../../utils/validemail.util";
 import { IOpt } from "../../../interfaces/props.interface";
-import { useLocation, useNavigate } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
 import { CustomInput } from "../../common/CustomInput";
 import CustomButton from "../../common/CustomButton";
@@ -40,9 +40,9 @@ export default function AddModal({
   const [inputValue, setInputValue] = useState(
     Object.fromEntries(inputData.map((data) => [data, ""]))
   );
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMenuOpenA, setIsMenuOpenA] = useState(false);
   const [inputReason, setInputReason] = useState("");
+  const searchParams = useSearchParams()[0];
+  const productId = searchParams.get("id");
   const { token } = useAppSelector((state) => state.auth);
   const { userId } = decodeUserData(token as string) as UserData;
   const navigate = useNavigate();
@@ -73,7 +73,10 @@ export default function AddModal({
     },
   ] = useCreateProductMutation();
   const [page, setPage] = useState(1);
-  const getProdQuery = useGetAllProductsQuery({ page, perPage: 2 });
+  const getAllProdQuery = useGetAllProductsQuery({ page, perPage: 2 });
+  const getProdQuery = useGetAProductQuery(productId as string, {
+    skip: !productId,
+  });
   const getCriteQuery = useGetBlacklistCriteriaQuery();
   const [blacklist, getBlacklistProps] = useBlacklistMutation();
   const [criteriaOpt, setCriteriaOpt] = useState<IOpt[]>([]);
@@ -135,7 +138,13 @@ export default function AddModal({
     }
 
     // BLACKLIST SERVICES
-    if (type === "blacklist" && !listDisable && userId) {
+    if (
+      type === "blacklist" &&
+      !listDisable &&
+      userId &&
+      selectedOpt?.value &&
+      selectedOptA.value
+    ) {
       blacklist({
         productId: selectedOpt.value,
         criteriaId: selectedOptA.value,
@@ -148,8 +157,8 @@ export default function AddModal({
 
   // FETCH AND POPULATE ALL PRODUCT DATA
   useEffect(() => {
-    if (getProdQuery.isSuccess && getProdQuery.data) {
-      const newProdList = getProdQuery.data.data.data.map((itm) => ({
+    if (getAllProdQuery.isSuccess && getAllProdQuery.data) {
+      const newProdList = getAllProdQuery.data.data.data.map((itm) => ({
         value: itm.id,
         label: itm.productName,
       }));
@@ -162,7 +171,21 @@ export default function AddModal({
         return [...prevProductOpt, ...uniqueNewProdList];
       });
     }
-  }, [getProdQuery.data, getProdQuery.isSuccess, setProductOpt]);
+
+    // Fetch and Populate a Single Product Data
+    if (getProdQuery.isSuccess && getProdQuery.data && productId) {
+      const prodQuery = getProdQuery.data.data;
+      setProductOpt([{ label: prodQuery.productName, value: prodQuery.id }]);
+      setSelectedOpt({ label: prodQuery.productName, value: prodQuery.id });
+    }
+  }, [
+    getAllProdQuery.data,
+    getAllProdQuery.isSuccess,
+    getProdQuery.data,
+    getProdQuery.isSuccess,
+    productId,
+    setProductOpt,
+  ]);
 
   // FETCH AND POPULATE ALL BLACKLIST CRITERIA DATA
   useEffect(() => {
@@ -261,10 +284,7 @@ export default function AddModal({
               <CustomSelect
                 options={userOpts}
                 placeholder={`Select User Role`}
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
                 onSelect={onSelect}
-                styles={selectStyles(isMenuOpen, "100%")}
               />
             </li>
           )}
@@ -273,16 +293,20 @@ export default function AddModal({
               <li>
                 <CustomSelect
                   isAsync
-                  isError={getProdQuery.isError}
-                  inProgress={getProdQuery.isLoading || getProdQuery.isFetching}
+                  isError={getAllProdQuery.isError}
+                  inProgress={
+                    getAllProdQuery.isLoading ||
+                    getAllProdQuery.isFetching ||
+                    getProdQuery.isLoading ||
+                    getProdQuery.isFetching
+                  }
                   loadMore={setPage}
                   options={productOpt}
-                  showBtn={getProdQuery.data?.data.totalPageCount !== page}
+                  isDisabled={getProdQuery.isSuccess}
+                  showBtn={getAllProdQuery.data?.data.totalPageCount !== page}
                   placeholder={`Select Product`}
-                  isMenuOpen={isMenuOpen}
-                  setIsMenuOpen={setIsMenuOpen}
+                  prefillId={productId as string}
                   onSelect={onSelect}
-                  styles={selectStyles(isMenuOpen, "100%")}
                 />
               </li>
               <li>
@@ -293,10 +317,7 @@ export default function AddModal({
                   }
                   options={criteriaOpt}
                   placeholder={`Select Criteria`}
-                  isMenuOpen={isMenuOpenA}
-                  setIsMenuOpen={setIsMenuOpenA}
                   onSelect={onSelectList}
-                  styles={selectStyles(isMenuOpenA, "100%")}
                 />
               </li>
               <li>
