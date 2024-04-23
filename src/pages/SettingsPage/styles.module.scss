@@ -1,13 +1,14 @@
 .container {
-  @apply mb-6 mt-5 mx-auto sm:rounded-lg shadow-md;
-  @apply rounded-md bg-white px-4 py-5 relative;
+  @apply px-3 lg:pl-5 py-4 lg:w-full mt-3 mx-2 lg:mx-auto;
+  @apply relative sm:rounded-lg shadow-md;
+  @apply rounded-md bg-white relative;
 
   .title {
     @apply font-semibold;
   }
 
   .userInfo {
-    @apply flex flex-col md:flex-row gap-6 flex-wrap mt-2 mb-4;
+    @apply flex flex-col md:flex-row gap-6 flex-wrap mb-4;
 
     li {
       @apply md:w-[45%];

@@ -128,7 +128,6 @@ export default function AddModal({
 
     // PRODUCT SERVICES
     if (type === "product" && !prodDisable) {
-      console.log(inputValue);
       createProduct({
         productName: inputValue["Name"],
         productDescription: inputValue["Description"],

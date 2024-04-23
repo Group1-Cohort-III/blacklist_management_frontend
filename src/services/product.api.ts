@@ -55,11 +55,9 @@ const productApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
       transformResponse: (response: DeleteProductResp) => {
-        console.log("ResDEL => ", response);
         return response;
       },
       transformErrorResponse: (response) => {
-        console.log("ErrDEL => ", response);
         return response;
       },
       invalidatesTags: ["Products"],

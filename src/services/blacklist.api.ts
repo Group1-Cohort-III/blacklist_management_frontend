@@ -57,7 +57,6 @@ const blacklistApi = baseApi.injectEndpoints({
       query: () => `BlacklistCriteria/get-blacklist-criterias`,
       transformResponse: (response: BlacklistCriteria[]) => response,
       transformErrorResponse: (response) => {
-        console.log("ErrCrit => ", response);
         return response;
       },
     }),

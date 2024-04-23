@@ -60,12 +60,11 @@ const baseQueryWithReauth: BaseQueryFn<
 
           const isExpired = isTokenExpired(cypherToken);
           const result = validateTokenResult as ValidateTokenResp;
-          console.log("ValidateTokenResult =>", result);
 
           const { succeeded, statusCode } = result;
 
           if (!succeeded || statusCode === 400 || isExpired) {
-            const logoutResult = await baseQuery(
+            await baseQuery(
               {
                 url: "Authentication/Logout",
                 method: "POST",
@@ -74,7 +73,6 @@ const baseQueryWithReauth: BaseQueryFn<
               extraOptions
             );
 
-            console.log("LogoutResult =>", logoutResult);
             api.dispatch(setIsExpired());
             api.dispatch(logoutUser());
           }

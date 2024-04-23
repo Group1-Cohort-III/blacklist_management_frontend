@@ -132,11 +132,13 @@ export default function DashboardBlacklist() {
           inputData={inputDataListEdit}
         />
       )}
-      <DeleteModal
-        showModal={showModalDel}
-        title={"Delete Blacklist"}
-        subtitle={"Are you sure you want to delete this blacklisted product?"}
-      />
+      {showModalDel && (
+        <DeleteModal
+          showModal={showModalDel}
+          title={"Delete Blacklist"}
+          subtitle={"Are you sure you want to delete this blacklisted product?"}
+        />
+      )}
       <DashboardLayout title="BlackList">
         <div className={styles.content}>
           <div className={styles.header}>

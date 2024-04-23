@@ -36,7 +36,6 @@ const setPasswordSlice = createSlice({
       })
 
       .addCase(setPassword.rejected, (state, { error }) => {
-        console.log("Slice eRR => ", error);
         const statusCode = error.code || 400;
         const errorMsg = error.message || "An error occurred!";
         state.isLoading = false;

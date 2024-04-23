@@ -23,7 +23,7 @@ export interface RTKError {
 
 export interface RTKUpdErr {
   status: string;
-  originalStatus: 200;
+  originalStatus: number;
   data: string;
   error: string;
 }
