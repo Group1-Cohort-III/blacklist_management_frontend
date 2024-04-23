@@ -154,12 +154,12 @@ export default function DashboardProducts() {
       {showModalEdit && (
         <EditProductModal showModal={showModalEdit} title="Edit Product" />
       )}
-      <DeleteModal
+      {showModalDel && <DeleteModal
         type="Product"
         showModal={showModalDel}
         title={"Delete Product"}
         subtitle={"Are you sure you want to delete product?"}
-      />
+      />}
       <DashboardLayout title="Products">
         <div className={styles.content}>
           <div className={styles.header}>

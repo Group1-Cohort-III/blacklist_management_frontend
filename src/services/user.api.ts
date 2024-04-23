@@ -44,11 +44,9 @@ const userApi = baseApi.injectEndpoints({
         body: requestData,
       }),
       transformResponse: (response: string) => {
-        console.log("USEAPI ", response);
         return response;
       },
       transformErrorResponse: (response) => {
-        console.log("USEAPIErr ", response);
         return response;
       },
       invalidatesTags: ["Users"],
@@ -60,11 +58,9 @@ const userApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
       transformResponse: (response: string) => {
-        console.log("ResDEL => ", response);
         return response;
       },
       transformErrorResponse: (response) => {
-        console.log("ErrDEL => ", response);
         return response;
       },
       invalidatesTags: ["Users"],

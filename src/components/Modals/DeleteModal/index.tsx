@@ -2,9 +2,9 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useDeleteProductMutation } from "../../../services/product.api";
 import { useDeleteUserMutation } from "../../../services/user.api";
 import { RTKUpdErr } from "../../../interfaces/generic.interface";
+import { memo, useCallback, useEffect, useState } from "react";
 import CustomButton from "../../common/CustomButton";
 import CustomHeader from "../../common/CustomHeader";
-import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import ModalLayout from "../ModalLayout";
 import Toast from "../../Toast";
@@ -53,9 +53,9 @@ export default function DeleteModal({
     },
   ] = useDeleteProductMutation();
 
-  const handleOnDelete = () => {
-    if (type === "User") {
-      deleteUser(userEmail as string);
+  const handleOnDelete = useCallback(() => {
+    if (type === "User" && userEmail) {
+      deleteUser(userEmail);
       return;
     }
 
@@ -63,14 +63,13 @@ export default function DeleteModal({
       if (productID) deleteProd(productID);
       return;
     }
-  };
+  }, [deleteUser, deleteProd, type, productID, userEmail]);
 
   useEffect(() => {
     setShowToast(isErrUser || isSuccessUser || isErrProd || isSuccessProd);
+    const error = (errUser as RTKUpdErr)?.originalStatus === 500;
 
-    console.log("Error Modal ", errUser);
-    console.log("Success Modal ", userDataResp);
-    if (isSuccessUser || isSuccessProd) {
+    if (isSuccessUser || isSuccessProd || error) {
       navigate(pathname, { replace: true });
       resetUser();
       resetProd();
@@ -85,7 +84,6 @@ export default function DeleteModal({
     pathname,
     resetProd,
     resetUser,
-    userDataResp,
   ]);
 
   return (
@@ -124,3 +122,5 @@ export default function DeleteModal({
     </ModalLayout>
   );
 }
+
+export const DeleteModalMemiozed = memo(DeleteModal);

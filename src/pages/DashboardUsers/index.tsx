@@ -1,5 +1,5 @@
 import DashboardLayout from "../../components/DashboardLayout";
-import DeleteModal from "../../components/Modals/DeleteModal";
+import { DeleteModalMemiozed } from "../../components/Modals/DeleteModal";
 import AddModal from "../../components/Modals/AddModal";
 import { useSearchParams } from "react-router-dom";
 import { MdOutlineEdit } from "react-icons/md";
@@ -56,9 +56,7 @@ export default function DashboardUsers() {
 
   const filterUsers = users
     ? users.data.data
-        .filter(
-          (user) => user.email !== adminEmail && user.email !== loginEmail
-        )
+        .filter((user) => user.email !== adminEmail)
         .map((data, i) => ({ index: i + 1, ...data, action: "" }))
     : [];
 
@@ -94,7 +92,10 @@ export default function DashboardUsers() {
           <span className={styles.btnAction}>
             <IoEyeSharp onClick={() => handleOnViewClick(id)} />
             <MdOutlineEdit onClick={() => handleOnEditClick(id)} />
-            <BiTrash onClick={() => handleOnDeleteClick(row[3])} />
+            {/* Don't show Delete button for the login user */}
+            {row[3] !== loginEmail && (
+              <BiTrash onClick={() => handleOnDeleteClick(row[3])} />
+            )}
           </span>
         ) : colIdx === 4 ? (
           <>{data ? "Yes" : "No"}</>
@@ -120,11 +121,11 @@ export default function DashboardUsers() {
         <ViewUserModal showModal={showModalView} title="User Details" />
       )}
       {showModalEdit && <EditModalUser showModal={showModalEdit} />}
-      <DeleteModal
+      {showModalDel && <DeleteModalMemiozed
         showModal={showModalDel}
         title={"Delete User"}
         subtitle={"Are you sure you want to delete user?"}
-      />
+      />}
       <DashboardLayout title="Users">
         <div className={styles.content}>
           <div className={styles.header}>
@@ -142,7 +143,7 @@ export default function DashboardUsers() {
             }
             theadData={theadData}
             tbodyData={tbodyData}
-            totalResults={users?.data.totalCount || 0}
+            totalResults={users?.data ? users?.data.totalCount - 1 : 0}
             resultsPerPage={perPage}
             maxVisiblePages={5}
             handlePageChange={handlePageChange}
